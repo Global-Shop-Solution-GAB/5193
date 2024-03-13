@@ -1,0 +1,277 @@
+Program.Sub.ScreenSU.Start
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+	V.Global.bTrainRemind.Declare
+	V.Global.bNotComplete.Declare
+	V.Global.bRenewRemind.Declare
+	V.Global.sSender.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	F.ODBC.Connection!con.OpenCompanyConnection
+	
+	F.Intrinsic.Control.CallSub(CheckEmail)
+	
+	F.Intrinsic.Control.If(V.Global.bTrainRemind)
+		'Send Training Reminders
+		F.Intrinsic.Control.CallSub(TrainingReminders)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.Global.bNotComplete)
+		'Send Not Complete Reminders
+		F.Intrinsic.Control.CallSub(NotCompleteReminders)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.Global.bRenewRemind)
+		'Send Renewal Reminders
+		F.Intrinsic.Control.CallSub(RenewalReminders)
+	F.Intrinsic.Control.EndIf
+	
+	F.ODBC.Connection!con.Close
+	F.Intrinsic.Control.End
+	
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.CheckEmail.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sFile.Declare
+	V.Local.bFile.Declare
+	V.Local.bOption.Declare
+	V.Local.iUserID.Declare
+	V.Local.sSenderName.Declare
+	V.Local.sSenderEmail.Declare
+
+	F.Intrinsic.Control.BlockEvents
+	
+	'Set Sender
+	F.Intrinsic.String.Build("{0}\GAB_5193_Default_Sender_Email.txt",V.Caller.GasDir,V.Local.sFile)
+	F.Intrinsic.File.Exists(V.Local.sFile,V.Local.bFile)
+	F.Intrinsic.Control.If(V.Local.bFile)
+		F.Intrinsic.File.File2String(V.Local.sFile,V.Local.sFile)
+		F.Intrinsic.String.Split(V.Local.sFile,"*!*",V.Local.sFile)
+		V.Local.sSenderName.Set(V.Local.sFile(0))
+		V.Local.sSenderEmail.Set(V.Local.sFile(1))
+	F.Intrinsic.Control.Else
+		F.Global.Security.GetUserId(V.Caller.User,V.Caller.CompanyCode,V.Local.iUserID)
+		F.Global.Security.GetUsernameFromID(V.Local.iUserID,V.Local.sSenderName)
+		F.Global.Security.GetUserEmail(V.Caller.User,V.Local.sSenderEmail)
+	F.Intrinsic.Control.EndIf
+	
+	'If Email is blank for the Sender emails can not go out so the program will close connections and end
+	F.Intrinsic.Control.If(V.Local.sSenderEmail,=,"")
+		F.ODBC.Connection!con.Close
+		F.Intrinsic.Control.End
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("{0}*!*{1}",V.Local.sSenderEmail,V.Local.sSenderName,V.Global.sSender)
+	F.Intrinsic.Control.EndIf
+	
+	'Training Reminders
+	F.Global.Registry.ReadValue("SUPERVSR",V.Caller.CompanyCode,"5193",5193,5000,0,"",V.Global.bTrainRemind)
+	
+	'Training Not Complete
+	F.Global.Registry.ReadValue("SUPERVSR",V.Caller.CompanyCode,"5193",5193,5100,0,"",V.Global.bNotComplete)
+	
+	'Renewal Reminders
+	F.Global.Registry.ReadValue("SUPERVSR",V.Caller.CompanyCode,"5193",5193,5200,0,"",V.Global.bRenewRemind)
+	
+	F.Intrinsic.Control.UnBlockEvents
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.CheckEmail.End
+
+Program.Sub.TrainingReminders.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.iCnt.Declare
+	V.Local.sSelect.Declare
+
+	 F.Data.DataTable.CreateFromSQL("dtTrainings","con","Select A.SCHED_ID,A.EMPNO,RTRIM(B.NAME) As NAME,C.FIRST,C.LAST,RTRIM(B.EMAIL_ADDR) As EMAIL,D.DEPARTMENT,E.COURSE_NAME,F.COURSE_TYPE,G.PROVIDER_NAME+' | '+CASE WHEN G.PROVIDER_ADDRESS IS NULL THEN '' ELSE G.PROVIDER_ADDRESS END As PROVIDER_NAME,H.LEVEL_NAME,A.STARTDT,A.ENDDT,A.HOURS_SCHED,A.COURSE_COST,A.PRODUCTION_COST,A.SCHEDULEDDT,Cast(Case When A.SCHEDULEDDT Is Null Then 0 Else 1 End As Bit) As SCHEDULED,A.COMPLETEDT,Cast(Case When A.COMPLETEDT Is Null Then 0 Else 1 End As Bit) As COMPLETED,E.COURSE_ID ,DATEDIFF(DAY,CURDATE(),A.STARTDT) AS DAYS_LATE From GAB_5193_SCHEDULED A Left Join V_EMPLOYEE_MSTR B On A.EMPNO = B.EMPLOYEE Left Join V_PYRL_EMP_NAME C On B.EMPLOYEE = C.EMPL Left Join GAB_5193_DEPTS D On A.DEPT_ID = D.DEPT_ID Left Join GAB_5193_COURSES E On A.COURSE_ID = E.COURSE_ID Left Join GAB_5193_COURSE_TYPE F On A.TYPE_ID = F.TYPE_ID Left Join GAB_5193_PROVIDERS G On A.PROVIDER_ID = G.PROVIDER_ID Left Join GAB_5193_LEVELS H On A.LEVEL_ID = H.LEVEL_ID Where A.STARTDT <= CAST(DATEADD(DAY,2,CURDATE()) AS DATE) And A.SCHEDULEDDT Is Not Null And B.DATE_TERMINATION = '1900-01-01' And A.COMPLETEDT Is Null Order By B.NAME,A.STARTDT;",True)
+	 
+	 F.Data.DataTable.Select("dtTrainings","DAYS_LATE = 0 OR DAYS_LATE = 1",V.Local.sSelect)
+	 F.Intrinsic.Control.If(V.Local.sSelect.IsNotNoReturn)
+		 F.Intrinsic.String.Split(V.Local.sSelect,"*!*",V.Local.sSelect)
+		 F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sSelect.UBound,1)
+		 	F.Intrinsic.Control.CallSub(SendTrainingEmails,"Row",V.Local.sSelect(V.Local.iCnt),"Reminder","TRAINING REMINDER")
+		 F.Intrinsic.Control.Next(V.Local.iCnt)
+	 F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.TrainingReminders.End
+
+Program.Sub.NotCompleteReminders.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.iCnt.Declare
+	V.Local.sSelect.Declare
+
+	 F.Data.DataTable.Select("dtTrainings","DAYS_LATE < 0",V.Local.sSelect)
+	 F.Intrinsic.Control.If(V.Local.sSelect.IsNotNoReturn)
+		 F.Intrinsic.String.Split(V.Local.sSelect,"*!*",V.Local.sSelect)
+		 F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sSelect.UBound,1)
+		 	F.Intrinsic.Control.CallSub(SendTrainingEmails,"Row",V.Local.sSelect(V.Local.iCnt),"Reminder","TRAINING IS PAST DUE")
+		 F.Intrinsic.Control.Next(V.Local.iCnt)
+	 F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.NotCompleteReminders.End
+
+Program.Sub.SendTrainingEmails.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sRecipient.Declare
+	V.Local.sSubject.Declare
+	V.Local.sBody.Declare
+	V.Local.sMsg.Declare
+
+	'Create Email Reminder
+	
+	'Build Subject
+	F.Intrinsic.String.Build("Employee Training ({0}) -- {1}",V.DataTable.dtTrainings(V.Args.Row).STARTDT!FieldVal,V.Args.Reminder,V.Local.sSubject)
+			
+	'Build Body
+	F.Intrinsic.String.Build("Training Information:{0}- Department: {1}{0}",V.Ambient.NewLine,V.DataTable.dtTrainings(V.Args.Row).DEPARTMENT!FieldValTrim,V.Local.sBody)
+	F.Intrinsic.String.Build("{0}- Type: {1}{2}",V.Local.sBody,V.DataTable.dtTrainings(V.Args.Row).COURSE_TYPE!FieldValTrim,V.Ambient.NewLine,V.Local.sBody)
+	F.Intrinsic.String.Build("{0}- Provider: {1}{2}",V.Local.sBody,V.DataTable.dtTrainings(V.Args.Row).PROVIDER_NAME!FieldValTrim,V.Ambient.NewLine,V.Local.sBody)
+	F.Intrinsic.String.Build("{0}- Course: {1}{2}",V.Local.sBody,V.DataTable.dtTrainings(V.Args.Row).COURSE_NAME!FieldValTrim,V.Ambient.NewLine,V.Local.sBody)
+	F.Intrinsic.String.Build("{0}- Level: {1}{2}",V.Local.sBody,V.DataTable.dtTrainings(V.Args.Row).LEVEL_NAME!FieldValTrim,V.Ambient.NewLine,V.Local.sBody)
+	F.Intrinsic.String.Build("{0}- Start Date/Time: {1}{2}",V.Local.sBody,V.DataTable.dtTrainings(V.Args.Row).STARTDT!FieldVal,V.Ambient.NewLine,V.Local.sBody)
+	F.Intrinsic.String.Build("{0}- Duration (Hrs): {1}",V.Local.sBody,V.DataTable.dtTrainings(V.Args.Row).HOURS_SCHED!FieldVal,V.Local.sBody)
+	
+	'Build Sender - V.Global.sSender
+	
+	'Build Recipients
+	F.Intrinsic.String.Build("{0}*!*{1}",V.DataTable.dtTrainings(V.Args.Row).NAME!FieldValTrim,V.DataTable.dtTrainings(V.Args.Row).EMAIL!FieldValTrim,V.Local.sRecipient)
+	
+	'Create Email - This needs to be screenless so the messages will be hidden and will not be logged currently
+	F.Intrinsic.Control.If(V.DataTable.dtTrainings(V.Args.Row).EMAIL!FieldValTrim,<>,"")
+		F.Global.Messaging.QueueMessage(V.Caller.CompanyCode,0,"",V.Local.sSubject,V.Global.sSender,V.Local.sRecipient,V.Local.sBody)
+	F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.SendTrainingEmails.End
+
+Program.Sub.RenewalReminders.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.iCnt.Declare
+	V.Local.sExp.Declare
+	V.Local.sSelect.Declare
+	V.Local.sRenewal.Declare
+	
+	F.Data.DataTable.CreateFromSQL("dtRenewal","con","Select A.SCHED_ID,B.EMPNO,RTRIM(E.NAME) AS NAME,RTRIM(E.EMAIL_ADDR) AS EMAIL,D.COURSE_NAME,C.SKILL,B.COMPLETEDT,Convert(Case When C.RENEWAL_FREQ = 'Day(s)' Then DateAdd(DAY,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Week(s)' Then DateAdd(WEEK,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Month(s)' Then DateAdd(MONTH,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Year(s)' Then DateAdd(YEAR,C.RENEWAL_VALUE,B.COMPLETEDT) End,SQL_DATE) As RENEWALDT,DateDiff(Day,CurDate(),Convert(Case When C.RENEWAL_FREQ = 'Day(s)' Then DateAdd(DAY,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Week(s)' Then DateAdd(WEEK,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Month(s)' Then DateAdd(MONTH,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Year(s)' Then DateAdd(YEAR,C.RENEWAL_VALUE,B.COMPLETEDT) End,SQL_DATE)) As DIFF From GAB_5193_SCHED_SKILL A Join GAB_5193_SCHEDULED B On A.SCHED_ID = B.SCHED_ID And COMPLETEDT Is Not Null Join GAB_5193_SKILLS C On A.SKILL_ID = C.SKILL_ID And C.RENEWAL_FREQ Is Not Null Join GAB_5193_COURSES D On B.COURSE_ID = D.COURSE_ID Join V_EMPLOYEE_MSTR E On B.EMPNO = E.EMPLOYEE And E.DATE_TERMINATION = '1900-01-01' And E.EMAIL_ADDR <> '' Order By B.EMPNO,D.COURSE_NAME,C.SKILL,B.COMPLETEDT DESC;",True)
+	
+	F.Data.DataView.Create("dtRenewal","dvRenewal")
+	F.Data.DataView.ToDataTableDistinct("dtRenewal","dvRenewal","dtRenew","EMPNO*!*NAME*!*EMAIL*!*COURSE_NAME*!*SKILL",True)
+	F.Data.DataTable.AddColumn("dtRenew","COMPLETEDT",Date)
+	F.Data.DataTable.AddColumn("dtRenew","RENEWALDT",Date)
+	F.Data.DataTable.AddColumn("dtRenew","DIFF",Long)
+	F.Data.DataView.Close("dtRenewal","dvRenewal")
+	
+	F.Intrinsic.Control.For(V.Local.iCnt,0,V.DataTable.dtRenew.RowCount--,1)
+		F.Intrinsic.String.Build("EMPNO = '{0}' And NAME = '{1}' And EMAIL = '{2}' And COURSE_NAME = '{3}' And SKILL = '{4}'",V.DataTable.dtRenew(V.Local.iCnt).EMPNO!FieldVal,V.DataTable.dtRenew(V.Local.iCnt).NAME!FieldVal,V.DataTable.dtRenew(V.Local.iCnt).EMAIL!FieldVal,V.DataTable.dtRenew(V.Local.iCnt).COURSE_NAME!FieldVal,V.DataTable.dtRenew(V.Local.iCnt).SKILL!FieldVal,V.Local.sExp)
+		F.Data.DataTable.Select("dtRenewal",v.Local.sExp,V.Local.sSelect)
+		F.Intrinsic.String.Split(V.Local.sSelect,"*!*",V.Local.sSelect)
+		F.Data.DataTable.SetValue("dtRenew",V.Local.iCnt,"COMPLETEDT",V.DataTable.dtRenewal(V.Local.sSelect(0)).COMPLETEDT!FieldVal,"RENEWALDT",V.DataTable.dtRenewal(V.Local.sSelect(0)).RENEWALDT!FieldVal,"DIFF",V.DataTable.dtRenewal(V.Local.sSelect(0)).DIFF!FieldVal)
+	F.Intrinsic.Control.Next(V.Local.iCnt)
+	
+	F.Data.DataTable.Close("dtRenewal")
+	
+	F.Intrinsic.Control.For(V.Local.iCnt,0,V.DataTable.dtRenew.RowCount--,1)
+		V.Local.sRenewal.Set("")
+	 	F.Intrinsic.Control.SelectCase(V.DataTable.dtRenew(V.Local.iCnt).DIFF!FieldValLong)
+	 		F.Intrinsic.Control.Case(365)
+	 			V.Local.sRenewal.Set("RENEWAL DUE IN A YEAR")
+	 		F.Intrinsic.Control.Case(30)
+	 			V.Local.sRenewal.Set("RENEWAL DUE IN A MONTH")
+	 		F.Intrinsic.Control.Case(7)
+	 			V.Local.sRenewal.Set("RENEWAL DUE IN A WEEK")
+	 		F.Intrinsic.Control.Case(0)
+	 			V.Local.sRenewal.Set("RENEWAL DUE TODAY")
+	 		F.Intrinsic.Control.CaseElse
+	 			F.Intrinsic.Control.If(V.DataTable.dtRenew(V.Local.iCnt).DIFF!FieldVal,<,0)
+	 				'Past Due
+	 				V.Local.sRenewal.Set("RENEWAL IS PAST DUE")
+	 			F.Intrinsic.Control.EndIf
+	 	F.Intrinsic.Control.EndSelect
+	 	F.Intrinsic.Control.If(V.Local.sRenewal,<>,"")
+	 		F.Intrinsic.Control.CallSub(SendRenewalEmails,"Row",V.Local.iCnt,"Reminder",V.Local.sRenewal)
+	 	F.Intrinsic.Control.EndIf
+	 F.Intrinsic.Control.Next(V.Local.iCnt)
+	
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.RenewalReminders.End
+
+Program.Sub.SendRenewalEmails.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sRecipient.Declare
+	V.Local.sSubject.Declare
+	V.Local.sBody.Declare
+	V.Local.sMsg.Declare
+
+	'Create Email Reminder
+	
+	'Build Subject
+	F.Intrinsic.String.Build("Employee Training Renewals - {0}",V.Args.Reminder,V.Local.sSubject)
+			
+	'Build Body
+	F.Intrinsic.String.Build("Training Information:{0}- Course: {1}{0}",V.Ambient.NewLine,V.DataTable.dtRenew(V.Args.Row).COURSE_NAME!FieldValTrim,V.Local.sBody)
+	F.Intrinsic.String.Build("{0}- Skill: {1}{2}",V.Local.sBody,V.DataTable.dtRenew(V.Args.Row).SKILL!FieldValTrim,V.Ambient.NewLine,V.Local.sBody)
+	F.Intrinsic.String.Build("{0}- Last Completed Date: {1}{2}",V.Local.sBody,V.DataTable.dtRenew(V.Args.Row).COMPLETEDT!FieldVal,V.Ambient.NewLine,V.Local.sBody)
+	F.Intrinsic.String.Build("{0}- Renewal Date: {1}",V.Local.sBody,V.DataTable.dtRenew(V.Args.Row).RENEWALDT!FieldVal,V.Local.sBody)
+	
+	'Build Sender - V.Global.sSender
+	
+	'Build Recipients
+	F.Intrinsic.String.Build("{0}*!*{1}",V.DataTable.dtRenew(V.Args.Row).NAME!FieldValTrim,V.DataTable.dtRenew(V.Args.Row).EMAIL!FieldValTrim,V.Local.sRecipient)
+	
+	'Create Email - This needs to be screenless so the messages will be hidden and will not be logged currently
+	F.Intrinsic.Control.If(V.DataTable.dtRenew(V.Args.Row).EMAIL!FieldValTrim,<>,"")
+		F.Global.Messaging.QueueMessage(V.Caller.CompanyCode,0,"",V.Local.sSubject,V.Global.sSender,V.Local.sRecipient,V.Local.sBody)
+	F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.SendRenewalEmails.End
+
+Program.Sub.Comments.Start
+Program.Sub.Comments.End
