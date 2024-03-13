@@ -1,0 +1,1295 @@
+Program.Sub.ScreenSU.Start
+Gui.frmTraining..Create
+Gui.frmTraining..Caption("Employee Training")
+Gui.frmTraining..Size(11760,9600)
+Gui.frmTraining..MinX(0)
+Gui.frmTraining..MinY(0)
+Gui.frmTraining..Position(0,0)
+Gui.frmTraining..BackColor(-2147483633)
+Gui.frmTraining..MousePointer(0)
+Gui.frmTraining..Event(UnLoad,frmTraining_UnLoad)
+Gui.frmTraining.picEmplPic.Create(PictureBox)
+Gui.frmTraining.picEmplPic.Size(1800,1800)
+Gui.frmTraining.picEmplPic.Position(30,30)
+Gui.frmTraining.lblEmplNo.Create(Label,"Employee No",True,1065,255,0,1860,90,True,0,"Arial",8,-2147483633,0)
+Gui.frmTraining.lblEmplName.Create(Label,"Name",True,570,255,0,2970,90,True,0,"Arial",8,-2147483633,0)
+Gui.frmTraining.txtEmplNo.Create(TextBox,"",True,1050,300,0,1860,300,True,0,"Arial",8,-2147483643,1)
+Gui.frmTraining.txtEmplNo.Locked(True)
+Gui.frmTraining.txtEmplName.Create(TextBox,"",True,2325,300,0,2970,300,True,0,"Arial",8,-2147483643,1)
+Gui.frmTraining.txtEmplName.Locked(True)
+Gui.frmTraining.lblDept.Create(Label,"Dept",True,525,255,0,2625,675,True,0,"Arial",8,-2147483633,0)
+Gui.frmTraining.txtDept.Create(TextBox,"",True,720,300,0,2625,885,True,0,"Arial",8,-2147483643,1)
+Gui.frmTraining.txtDept.Locked(True)
+Gui.frmTraining.lblShift.Create(Label,"Shift",True,525,255,0,1860,675,True,0,"Arial",8,-2147483633,0)
+Gui.frmTraining.txtShift.Create(TextBox,"",True,720,300,0,1860,885,True,0,"Arial",8,-2147483643,1)
+Gui.frmTraining.txtShift.Locked(True)
+Gui.frmTraining.frameCourses.Create(Frame)
+Gui.frmTraining.frameCourses.Size(11595,7455)
+Gui.frmTraining.frameCourses.Position(30,1875)
+Gui.frmTraining.frameCourses.Caption("Courses")
+Gui.frmTraining.frameCourses.Anchor(15)
+Gui.frmTraining.GsGCCourses.Create(GsGridControl)
+Gui.frmTraining.GsGCCourses.Size(11535,7170)
+Gui.frmTraining.GsGCCourses.Position(30,225)
+Gui.frmTraining.GsGCCourses.Parent("frameCourses")
+Gui.frmTraining.GsGCCourses.Anchor(15)
+Gui.frmTraining.lblBetween.Create(Label,"Between",True,780,255,0,1890,1650,True,0,"Arial",8,-2147483633,0)
+Gui.frmTraining.dtpStartDT.Create(DatePicker)
+Gui.frmTraining.dtpStartDT.Size(1425,285)
+Gui.frmTraining.dtpStartDT.Position(2685,1545)
+Gui.frmTraining.dtpEndDT.Create(DatePicker)
+Gui.frmTraining.dtpEndDT.Size(1425,285)
+Gui.frmTraining.dtpEndDT.Position(4605,1545)
+Gui.frmTraining.lblAnd.Create(Label,"And",True,450,255,0,4140,1650,True,0,"Arial",8,-2147483633,0)
+Gui.frmTraining.ddlFilter.Create(DropDownList)
+Gui.frmTraining.ddlFilter.Size(1545,330)
+Gui.frmTraining.ddlFilter.Position(6105,1545)
+Gui.frmTraining.cmdRefresh.Create(Button)
+Gui.frmTraining.cmdRefresh.Size(510,375)
+Gui.frmTraining.cmdRefresh.Position(7665,1515)
+Gui.frmTraining.cmdRefresh.Caption("REFRESH")
+Gui.frmTraining.cmdRefresh.Event(Click,LoadEmplTrainings)
+Gui.frmTraining.lblHireDate.Create(Label,"Hire Date",True,795,255,0,3390,675,True,0,"Arial",8,-2147483633,0)
+Gui.frmTraining.lblTermDate.Create(Label,"Term. Date",True,870,255,0,4365,675,True,0,"Arial",8,-2147483633,0)
+Gui.frmTraining.txtHireDate.Create(TextBox,"",True,930,300,0,3390,885,True,0,"Arial",8,-2147483643,1)
+Gui.frmTraining.txtHireDate.Locked(True)
+Gui.frmTraining.txtTermDate.Create(TextBox,"",True,930,300,0,4365,885,True,0,"Arial",8,-2147483643,1)
+Gui.frmTraining.txtTermDate.Locked(True)
+Gui.frmTraining.lblStatus.Create(Label,"Loading....",False,1455,255,0,8235,1635,True,0,"Arial",9,-2147483633,0)
+Gui.frmTraining.lblStatus.FontStyle(True,False,False,False,False)
+Gui.frmViewNotes..Create
+Gui.frmViewNotes..Caption("View Notes")
+Gui.frmViewNotes..Size(6780,6750)
+Gui.frmViewNotes..MinX(0)
+Gui.frmViewNotes..MinY(0)
+Gui.frmViewNotes..Position(0,0)
+Gui.frmViewNotes..BackColor(-2147483633)
+Gui.frmViewNotes..MousePointer(0)
+Gui.frmViewNotes..Event(UnLoad,frmViewNotes_UnLoad)
+Gui.frmViewNotes.GsGCViewNotes.Create(GsGridControl)
+Gui.frmViewNotes.GsGCViewNotes.Size(6630,3135)
+Gui.frmViewNotes.GsGCViewNotes.Position(15,15)
+Gui.frmViewNotes.GsGCViewNotes.Anchor(15)
+Gui.frmViewNotes.GsGCViewNotes.Event(RowCellClick,GsGCViewNotes_RowCellClick)
+Gui.frmViewNotes.txtViewNotes.Create(TextboxM)
+Gui.frmViewNotes.txtViewNotes.Size(6630,3135)
+Gui.frmViewNotes.txtViewNotes.Position(15,3195)
+Gui.frmViewNotes.txtViewNotes.Anchor(14)
+Gui.frmDocs..Create
+Gui.frmDocs..Caption("Add/Update Documents")
+Gui.frmDocs..Size(9720,8355)
+Gui.frmDocs..MinX(0)
+Gui.frmDocs..MinY(0)
+Gui.frmDocs..Position(0,0)
+Gui.frmDocs..BackColor(-2147483633)
+Gui.frmDocs..MousePointer(0)
+Gui.frmDocs..Event(UnLoad,frmDocs_UnLoad)
+Gui.frmDocs.GsGCDocs.Create(GsGridControl)
+Gui.frmDocs.GsGCDocs.Size(9555,8010)
+Gui.frmDocs.GsGCDocs.Position(15,15)
+Gui.frmDocs.GsGCDocs.Event(RowCellClick,GsGCDocs_RowCellClick)
+Gui.frmDocs.GsGCDocs.Anchor(15)
+Gui.frmRenewals..Create
+Gui.frmRenewals..Caption("Renewal Status")
+Gui.frmRenewals..Size(11760,9390)
+Gui.frmRenewals..MinX(0)
+Gui.frmRenewals..MinY(0)
+Gui.frmRenewals..Position(0,0)
+Gui.frmRenewals..BackColor(-2147483633)
+Gui.frmRenewals..MousePointer(0)
+Gui.frmRenewals..Event(UnLoad,frmRenewals_UnLoad)
+Gui.frmRenewals.GsGCRenewals.Create(GsGridControl)
+Gui.frmRenewals.GsGCRenewals.Size(11580,8640)
+Gui.frmRenewals.GsGCRenewals.Position(30,450)
+Gui.frmRenewals.GsGCRenewals.Anchor(15)
+Gui.frmRenewals.txt1.Create(TextBox,"1 - Renew in 1 Year    ",True,1830,195,0,30,15,True,0,"Arial",8,13826810,0)
+Gui.frmRenewals.txt1.FontStyle(True,False,False,False,False)
+Gui.frmRenewals.txt1.Locked(True)
+Gui.frmRenewals.txt2.Create(TextBox,"2 - Renew in 1 Month",True,1815,195,0,30,225,True,0,"Arial",8,2139610,0)
+Gui.frmRenewals.txt2.Locked(True)
+Gui.frmRenewals.txt2.FontStyle(True,False,False,False,False)
+Gui.frmRenewals.txt3.Create(TextBox,"3 - Renew in 1 Week",True,1815,195,0,1860,15,True,0,"Arial",8,42495,0)
+Gui.frmRenewals.txt3.Locked(True)
+Gui.frmRenewals.txt3.FontStyle(True,False,False,False,False)
+Gui.frmRenewals.txt4.Create(TextBox,"4 - Due or Overdue",True,1815,195,0,1860,225,True,0,"Arial",8,255,0)
+Gui.frmRenewals.txt4.Locked(True)
+Gui.frmRenewals.txt4.FontStyle(True,False,False,False,False)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+	V.Global.sGsGCIcon.Declare
+	V.Global.bLoadDataEmplTrain.Declare
+	V.Global.bLoadDataRenewal.Declare
+	V.Global.sEmpNo.Declare
+	V.Global.iSchedID.Declare
+	V.Global.iCourseID.Declare
+	V.Global.sDocTypes.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	Gui.frmTraining.picEmplPic.SizeMode(1)
+	
+	'Set Logo in GsGridControl Group Header
+	F.Intrinsic.String.Build("{0}\GAB_GSS_Logo_Green_Dash.png",V.Caller.ArtDir,V.Global.sGsGCIcon)
+
+	F.ODBC.Connection!con.OpenCompanyConnection
+	
+	F.Intrinsic.Control.CallSub(LoadDropDownList)
+	F.Intrinsic.Control.CallSub(SetContextMenus)
+	F.Intrinsic.Control.CallSub(EmplTrainings)
+	
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.LoadDropDownList.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.dStartDT.Declare
+
+	F.Intrinsic.Control.BlockEvents
+	
+	'frmTraining
+	Gui.frmTraining.ddlFilter.AddItem("All",0)
+	Gui.frmTraining.ddlFilter.AddItem("Scheduled Only",1)
+	Gui.frmTraining.ddlFilter.AddItem("Completed Only",2)
+	Gui.frmTraining.ddlFilter.Text("All")
+	
+	'Set Default Dates
+	F.Intrinsic.Date.DateAdd("D",-1,V.Ambient.Date,V.Local.dStartDT)
+	Gui.frmTraining.dtpStartDT.Value(V.Local.dStartDT)
+	Gui.frmTraining.dtpEndDT.Value(V.Ambient.Date)
+	
+	F.Intrinsic.Control.UnBlockEvents
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.LoadDropDownList.End
+
+Program.Sub.SetContextMenus.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	Gui.frmTraining..ContextMenuCreate("CTXEMPLTRAIN")
+	Gui.frmTraining.GsGCCourses.ContextMenuAttach("CTXEMPLTRAIN")
+	Gui.frmTraining..ContextMenuAddItem("CTXEMPLTRAIN","Notes",0,"View Notes")
+	Gui.frmTraining..ContextMenuAddItem("CTXEMPLTRAIN","Docs",0,"View Docs (Certs, Training, Course)")
+	Gui.frmTraining..ContextMenuAddItem("CTXEMPLTRAIN","Exp",3)
+	Gui.frmTraining..ContextMenuAddItem("CTXEMPLTRAIN","Refresh",0,"Refresh")
+	Gui.frmTraining..ContextMenuAddItem("CTXEMPLTRAIN","Export",0,"Export")
+	Gui.frmTraining..ContextMenuAddItem("CTXEMPLTRAIN","Reset",0,"Reset Columns")
+	Gui.frmTraining..ContextMenuSetItemEventHandler("CTXEMPLTRAIN","Notes","MenuClickEmplTrain")
+	Gui.frmTraining..ContextMenuSetItemEventHandler("CTXEMPLTRAIN","Docs","MenuClickEmplTrain")
+	Gui.frmTraining..ContextMenuSetItemEventHandler("CTXEMPLTRAIN","Refresh","MenuClickEmplTrain")
+	Gui.frmTraining..ContextMenuSetItemEventHandler("CTXEMPLTRAIN","Export","MenuClickEmplTrain")
+	Gui.frmTraining..ContextMenuSetItemEventHandler("CTXEMPLTRAIN","Reset","MenuClickEmplTrain")
+	
+	Gui.frmViewNotes..ContextMenuCreate("CTXVIEWNOTES")
+	Gui.frmViewNotes.GsGCViewNotes.ContextMenuAttach("CTXVIEWNOTES")
+	Gui.frmViewNotes..ContextMenuAddItem("CTXVIEWNOTES","Export",0,"Export")
+	Gui.frmViewNotes..ContextMenuSetItemEventHandler("CTXVIEWNOTES","Export","MenuClickViewNotes")
+	
+	Gui.frmDocs..ContextMenuCreate("CTXVIEWDOCS")
+'	Gui.frmDocs.GsGCDocs.ContextMenuAttach("CTXVIEWDOCS")
+	Gui.frmDocs..ContextMenuAddItem("CTXVIEWDOCS","SelAll",0,"Select All")
+	Gui.frmDocs..ContextMenuAddItem("CTXVIEWDOCS","DeselAll",0,"Deselect All")
+	Gui.frmDocs..ContextMenuAddItem("CTXVIEWDOCS","Exp",3)
+	Gui.frmDocs..ContextMenuAddItem("CTXVIEWDOCS","Open",0,"Open Selected")
+	Gui.frmDocs..ContextMenuAddItem("CTXVIEWDOCS","ZIP",0,"ZIP Selected")
+	Gui.frmDocs..ContextMenuSetItemEventHandler("CTXVIEWDOCS","SelAll","MenuClickViewDoc")
+	Gui.frmDocs..ContextMenuSetItemEventHandler("CTXVIEWDOCS","DeselAll","MenuClickViewDoc")
+	Gui.frmDocs..ContextMenuSetItemEventHandler("CTXVIEWDOCS","Open","MenuClickViewDoc")
+	Gui.frmDocs..ContextMenuSetItemEventHandler("CTXVIEWDOCS","ZIP","MenuClickViewDoc")
+	
+	Gui.frmRenewals..ContextMenuCreate("CTXRENEW")
+	Gui.frmRenewals.GsGCRenewals.ContextMenuAttach("CTXRENEW")
+	Gui.frmRenewals..ContextMenuAddItem("CTXRENEW","Refresh",0,"Refresh")
+	Gui.frmRenewals..ContextMenuAddItem("CTXRENEW","Export",0,"Export")
+	Gui.frmRenewals..ContextMenuAddItem("CTXRENEW","Reset",0,"Reset Columns")
+	Gui.frmRenewals..ContextMenuSetItemEventHandler("CTXRENEW","Refresh","MenuClickRenew")
+	Gui.frmRenewals..ContextMenuSetItemEventHandler("CTXRENEW","Export","MenuClickRenew")
+	Gui.frmRenewals..ContextMenuSetItemEventHandler("CTXRENEW","Reset","MenuClickRenew")
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.SetContextMenus.End
+
+Program.Sub.MenuClickEmplTrain.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sFileExport.Declare
+	V.Local.bExcel.Declare
+	V.Local.bFileLocked.Declare
+	V.Local.sMsg.Declare
+	V.Local.sExt.Declare
+	V.Local.iRow.Declare
+	V.Local.iSchedID.Declare
+	
+	F.Intrinsic.Control.SelectCase(V.Args.ItemName)
+		F.Intrinsic.Control.Case("NOTES")
+			'Get Sched_ID
+			Gui.frmTraining.GsGCCourses.GetSelectedRows("gvEmplTrainings",V.Local.iRow)
+			V.Global.iSchedID.Set(V.DataTable.dtEmplTrainings(V.Local.iRow).SCHED_ID!FieldVal)
+			F.Intrinsic.Control.CallSub(LoadViewNotes)
+			
+		F.Intrinsic.Control.Case("DOCS")
+			'Get Sched_ID
+			Gui.frmTraining.GsGCCourses.GetSelectedRows("gvEmplTrainings",V.Local.iRow)
+			V.Global.iSchedID.Set(V.DataTable.dtEmplTrainings(V.Local.iRow).SCHED_ID!FieldVal)
+			V.Global.iCourseID.Set(V.DataTable.dtEmplTrainings(V.Local.iRow).COURSE_ID!FieldVal)
+			Gui.frmDocs.GsGCDocs.ContextMenuAttach("CTXVIEWDOCS")
+			Gui.frmDocs..Caption("View Docs (Certs, Training, Course)")
+			F.Intrinsic.Control.CallSub(LoadViewDocs)
+			
+		F.Intrinsic.Control.Case("REFRESH")
+			F.Intrinsic.Control.CallSub(LoadEmplTrainings)
+			
+		F.Intrinsic.Control.Case("EXPORT")
+			F.Automation.MSExcel.CheckPresence(V.Local.bExcel)
+			F.Intrinsic.Control.If(V.Local.bExcel)
+				V.Local.sExt.Set("xlsx")
+			F.Intrinsic.Control.Else
+				V.Local.sExt.Set("csv")
+			F.Intrinsic.Control.EndIf
+			
+			F.Intrinsic.String.Build("{0}\GAB_5193_EmployeeTrainings_Export.{1}",V.Caller.LocalGssTempDir,V.Local.sExt,V.Local.sFileExport)
+			F.Intrinsic.File.IsFileLocked(V.Local.sFileExport,V.Local.bFileLocked)
+			F.Intrinsic.Control.If(V.Local.bFileLocked)
+				F.Intrinsic.String.Build("File is already open. Please close and export again.{0}File: {1}",V.Ambient.NewLine,V.Local.sFileExport,V.Local.sMsg)
+				F.Intrinsic.UI.Msgbox(V.Local.sMsg,"File In Use")
+			F.Intrinsic.Control.Else
+				Gui.frmTraining.GsGCCourses.Export(V.Local.sFileExport,V.Local.sExt)
+				F.Intrinsic.Task.ShellExec(0,"",V.Local.sFileExport,"","",1)
+			F.Intrinsic.Control.EndIf
+			
+		F.Intrinsic.Control.Case("RESET")
+			V.Global.bLoadDataEmplTrain.Set(False)
+			F.Global.Registry.AddValue(V.Caller.User,V.Caller.CompanyCode,"GVEMPLTRAININGS",5193,2000,False,"Serialize",False,0,-999.0,1/1/1980,12:00:00 AM,"")
+			F.Intrinsic.Control.CallSub(LoadEmplTrainings)
+			
+	F.Intrinsic.Control.EndSelect
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.MenuClickEmplTrain.End
+
+Program.Sub.MenuClickViewNotes.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.iRet.Declare
+	V.Local.sFileExport.Declare
+	V.Local.bExcel.Declare
+	V.Local.bFileLocked.Declare
+	V.Local.sMsg.Declare
+	V.Local.sExt.Declare
+	V.Local.sSQL.Declare
+	V.Local.iRow.Declare
+
+	F.Intrinsic.Control.SelectCase(V.Args.ItemName)
+		F.Intrinsic.Control.Case("EXPORT")
+			F.Automation.MSExcel.CheckPresence(V.Local.bExcel)
+			F.Intrinsic.Control.If(V.Local.bExcel)
+				V.Local.sExt.Set("xlsx")
+			F.Intrinsic.Control.Else
+				V.Local.sExt.Set("csv")
+			F.Intrinsic.Control.EndIf
+			
+			F.Intrinsic.String.Build("{0}\GAB_5193_ViewNotes_Export.{1}",V.Caller.LocalGssTempDir,V.Local.sExt,V.Local.sFileExport)
+			F.Intrinsic.File.IsFileLocked(V.Local.sFileExport,V.Local.bFileLocked)
+			F.Intrinsic.Control.If(V.Local.bFileLocked)
+				F.Intrinsic.String.Build("File is already open. Please close and export again.{0}File: {1}",V.Ambient.NewLine,V.Local.sFileExport,V.Local.sMsg)
+				F.Intrinsic.UI.Msgbox(V.Local.sMsg,"File In Use")
+			F.Intrinsic.Control.Else
+				Gui.frmViewNotes.GsGCViewNotes.Export(V.Local.sFileExport,V.Local.sExt)
+				F.Intrinsic.Task.ShellExec(0,"",V.Local.sFileExport,"","",1)
+			F.Intrinsic.Control.EndIf
+			
+	F.Intrinsic.Control.EndSelect
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.MenuClickViewNotes.End
+
+Program.Sub.MenuClickViewDoc.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sSelect.Declare
+	V.Local.iCnt.Declare
+	V.Local.sTargetFile.Declare
+	V.Local.sSourceFile.Declare
+	V.Local.bExists.Declare
+	V.Local.sMsg.Declare
+	V.Local.sPath.Declare
+	V.Local.sSQL.Declare
+	V.Local.bLocked.Declare
+	V.Local.sFieldName.Declare
+	
+	F.Intrinsic.Control.SelectCase(V.Args.ItemName)
+		F.Intrinsic.Control.Case("SELALL")
+			F.Data.DataTable.SetValue("dtViewDocs",-1,"SEL",True)
+			
+		F.Intrinsic.Control.Case("DESELALL")
+			F.Data.DataTable.SetValue("dtViewDocs",-1,"SEL",False)
+			
+		F.Intrinsic.Control.Case("OPEN")
+			F.Data.DataTable.Select("dtViewDocs","SEL = True",V.Local.sSelect)
+			F.Intrinsic.Control.If(V.Local.sSelect.IsNotNoReturn)
+				F.Intrinsic.String.Split(V.Local.sSelect,"*!*",V.Local.sSelect)
+				F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sSelect.UBound,1)
+					F.Intrinsic.String.Build("{0}{1}",V.DataTable.dtViewDocs(V.Local.sSelect(V.Local.iCnt)).DOC_PATH!FieldVal,V.DataTable.dtViewDocs(V.Local.sSelect(V.Local.iCnt)).DOC_TITLE!FieldVal,V.Local.sSourceFile)
+					F.Intrinsic.Task.ShellExec(0,"",V.Local.sSourceFile,"","",1)
+				F.Intrinsic.Control.Next(V.Local.iCnt)
+			F.Intrinsic.Control.Else
+					F.Intrinsic.UI.Msgbox("No files are selected.","Open Cancelled")
+			F.Intrinsic.Control.EndIf
+			
+		F.Intrinsic.Control.Case("ZIP")
+			'Save all files to a Temp Location and then zip them all at the end - provide a screen for the use to select where to save the zip folder
+			'Name ZIP File and set File path
+			F.Intrinsic.String.Build("{0}_{1}_{2}.zip",V.Caller.User,V.Ambient.Date.FormatYYYYMMDD,V.Ambient.Time.FormatHHNNSS,V.Local.sTargetFile)
+			F.Intrinsic.UI.FolderBrowser("Select Directory",,V.Local.sPath)
+			F.Intrinsic.Control.If(V.Local.sPath.IsCancel)
+				F.Intrinsic.UI.Msgbox("No ZIP created.","ZIP Cancelled")
+				F.Intrinsic.Control.ExitSub
+			F.Intrinsic.Control.Else
+				F.Intrinsic.String.Build("{0}\{1}",V.Local.sPath,V.Local.sTargetFile,V.Local.sTargetFile)
+				F.Intrinsic.File.Exists(V.Local.sTargetFile,V.Local.bExists)
+				F.Intrinsic.Control.If(V.Local.bExists)
+					F.Intrinsic.File.DeleteFile(V.Local.sTargetFile)
+				F.Intrinsic.Control.EndIf
+				
+				F.Data.DataTable.Select("dtViewDocs","SEL = True",V.Local.sSelect)
+				F.Intrinsic.Control.If(V.Local.sSelect.IsNotNoReturn)
+					F.Intrinsic.String.Split(V.Local.sSelect,"*!*",V.Local.sSelect)
+					F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sSelect.UBound,1)
+						F.Intrinsic.String.Build("{0}{1}",V.DataTable.dtViewDocs(V.Local.sSelect(V.Local.iCnt)).DOC_PATH!FieldVal,V.DataTable.dtViewDocs(V.Local.sSelect(V.Local.iCnt)).DOC_TITLE!FieldVal,V.Local.sSourceFile)
+						F.Automation.Zip.Zip(V.Local.sSourceFile,V.Local.sTargetFile)
+					F.Intrinsic.Control.Next(V.Local.iCnt)
+					'ZIP Complete
+					F.Intrinsic.String.Build("Zip created: {0}",V.Local.sTargetFile,V.Local.sMsg)
+					F.Intrinsic.UI.Msgbox(V.Local.sMsg)
+				F.Intrinsic.Control.Else
+					F.Intrinsic.UI.Msgbox("No files are selected.","ZIP Cancelled")
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+			
+	F.Intrinsic.Control.EndSelect
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.MenuClickViewDoc.End
+
+Program.Sub.MenuClickRenew.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sFileExport.Declare
+	V.Local.bExcel.Declare
+	V.Local.bFileLocked.Declare
+	V.Local.sMsg.Declare
+	V.Local.sExt.Declare
+
+	F.Intrinsic.Control.SelectCase(V.Args.ItemName)
+		F.Intrinsic.Control.Case("REFRESH")
+			F.Intrinsic.Control.CallSub(LoadRenewalStatus)
+			
+		F.Intrinsic.Control.Case("EXPORT")
+			F.Automation.MSExcel.CheckPresence(V.Local.bExcel)
+			F.Intrinsic.Control.If(V.Local.bExcel)
+				V.Local.sExt.Set("xlsx")
+			F.Intrinsic.Control.Else
+				V.Local.sExt.Set("csv")
+			F.Intrinsic.Control.EndIf
+			
+			F.Intrinsic.String.Build("{0}\GAB_5193_RenewalStatus_Export.{1}",V.Caller.LocalGssTempDir,V.Local.sExt,V.Local.sFileExport)
+			F.Intrinsic.File.IsFileLocked(V.Local.sFileExport,V.Local.bFileLocked)
+			F.Intrinsic.Control.If(V.Local.bFileLocked)
+				F.Intrinsic.String.Build("File is already open. Please close and export again.{0}File: {1}",V.Ambient.NewLine,V.Local.sFileExport,V.Local.sMsg)
+				F.Intrinsic.UI.Msgbox(V.Local.sMsg,"File In Use")
+			F.Intrinsic.Control.Else
+				Gui.frmRenewals.GsGCRenewals.Export(V.Local.sFileExport,V.Local.sExt)
+				F.Intrinsic.Task.ShellExec(0,"",V.Local.sFileExport,"","",1)
+			F.Intrinsic.Control.EndIf
+			
+		F.Intrinsic.Control.Case("RESET")
+			V.Global.bLoadDataRenewal.Set(False)
+			F.Global.Registry.AddValue(V.Caller.User,V.Caller.CompanyCode,"GVRENEW",5193,4000,False,"Serialize",False,0,-999.0,1/1/1980,12:00:00 AM,"")
+			F.Intrinsic.Control.CallSub(LoadRenewalStatus)
+			
+	F.Intrinsic.Control.EndSelect
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.MenuClickRenew.End
+
+Program.Sub.frmTraining_UnLoad.Start
+ 	F.Intrinsic.Control.Try
+ 	V.Local.sError.Declare
+ 	
+ 	F.Intrinsic.Control.If(V.Global.bLoadDataEmplTrain)
+		F.Intrinsic.Control.CallSub(SerializeEmplTrain)
+	F.Intrinsic.Control.EndIf
+ 
+ 	F.ODBC.Connection!con.Close
+ 	F.Intrinsic.Control.End
+ 	
+ 	F.Intrinsic.Control.Catch
+ 		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+ 		F.Intrinsic.UI.Msgbox(V.Local.sError)
+ 		F.Intrinsic.Control.End 
+ 	F.Intrinsic.Control.EndTry
+Program.Sub.frmTraining_UnLoad.End
+
+Program.Sub.EmplTrainings.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sDefaultPic.Declare
+	V.Local.dDate.Declare
+	V.Local.sDate.Declare
+	V.Local.sSQL.Declare
+	
+	'Check for Emp No
+	F.Global.Security.GetEmpNoFromUser(V.Caller.User,V.Global.sEmpNo)
+	F.Intrinsic.Control.If(V.Global.sEmpNo.IsNoReturn)
+		F.Intrinsic.UI.Msgbox("Your GSS Username is not associated with an Employee. Please assign and try again.","No User Found")
+		F.Intrinsic.Control.CallSub(frmTraining_UnLoad)
+	F.Intrinsic.Control.EndIf	
+	
+	'Set Employee Photo or Defualt Picture
+	F.Intrinsic.String.Build("{0}\GAB_5193_Employee_Training_Pic.png",V.Caller.GasDir,V.Local.sDefaultPic)
+	Gui.frmTraining.picEmplPic.Picture(V.Local.sDefaultPic)
+	
+	F.Intrinsic.String.Build("Select * From GAB_5193_EMPL_PHOTO Where EMPNO = '{0}';",V.Global.sEmpNo,V.Local.sSQL)
+	F.Data.DataTable.CreateFromSQL("dtEmplPhoto","con",V.Local.sSQL,True)
+	F.Intrinsic.Control.If(V.DataTable.dtEmplPhoto.RowCount,<>,0)
+		Gui.frmTraining.picEmplPic.Picture(V.DataTable.dtEmplPhoto(0).PHOTO_PATH!FieldVal)
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Close("dtEmplPhoto")
+
+	'Set Screen fields
+	F.Intrinsic.String.Build("Select EMPLOYEE,NAME,SHIFT,DEPT_EMPLOYEE,Case DATE_HIRE When '1900-01-01' Then Null Else DATE_HIRE End As DATE_HIRE,Case DATE_TERMINATION When '1900-01-01' Then Null Else DATE_TERMINATION End As DATE_TERMINATION From V_EMPLOYEE_MSTR Where EMPLOYEE = '{0}';",V.Global.sEmpNo,V.Local.sSQL)
+	F.Data.DataTable.CreateFromSQL("dtEmplInfo","con",V.Local.sSQL,True)
+	F.Intrinsic.Control.If(V.DataTable.dtEmplInfo.RowCount,<>,0)
+		'Employee
+		Gui.frmTraining.txtEmplNo.Text(V.DataTable.dtEmplInfo(0).Employee!FieldVal)
+		'Name
+		Gui.frmTraining.txtEmplName.Text(V.DataTable.dtEmplInfo(0).Name!FieldVal)
+		'Shift
+		Gui.frmTraining.txtShift.Text(V.DataTable.dtEmplInfo(0).Shift!FieldVal)
+		'Dept
+		Gui.frmTraining.txtDept.Text(V.DataTable.dtEmplInfo(0).Dept_Employee!FieldVal)
+		'Date_Hire
+		F.Intrinsic.Control.If(V.DataTable.dtEmplInfo(0).Date_Hire!FieldVal,=,"")
+			Gui.frmTraining.txtHireDate.Text("")
+		F.Intrinsic.Control.Else
+			V.Local.dDate.Set(V.DataTable.dtEmplInfo(0).Date_Hire!FieldVal)
+			Gui.frmTraining.txtHireDate.Text(V.Local.dDate.String)
+		F.Intrinsic.Control.EndIf
+		'Date_Termination
+		F.Intrinsic.Control.If(V.DataTable.dtEmplInfo(0).Date_Termination!FieldVal,=,"")
+			Gui.frmTraining.txtTermDate.Text("")
+		F.Intrinsic.Control.Else
+			V.Local.dDate.Set(V.DataTable.dtEmplInfo(0).Date_Termination!FieldVal)
+			Gui.frmTraining.txtTermDate.Text(V.Local.dDate.String)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Close("dtEmplInfo")
+	
+	'Show Screen
+	Gui.frmTraining..Show
+	
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.EmplTrainings.End
+
+Program.Sub.LoadEmplTrainings.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	V.Local.sSQL.Declare
+	V.Local.dStartDate.Declare
+	V.Local.dEndDate.Declare
+	
+	V.Local.dStartDate.Set(V.Screen.frmTraining!dtpStartDT.Value)
+	F.Intrinsic.Date.DateAdd("D",1,V.Screen.frmTraining!dtpEndDT.Value,V.Local.dEndDate)
+	F.Intrinsic.Control.If(V.Local.dStartDate,>,V.Local.dEndDate)
+		F.Intrinsic.UI.Msgbox("Start Date needs to be before the End Date.","Trainings")
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.Global.bLoadDataEmplTrain)
+		F.Intrinsic.Control.CallSub(SerializeEmplTrain)
+	F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.Control.If(V.DataTable.dtEmplTrainings.Exists)
+		F.Data.DataTable.Close("dtEmplTrainings")
+	F.Intrinsic.Control.EndIf
+	
+	Gui.frmTraining.lblStatus.Visible(True)
+	
+	F.Intrinsic.Control.SelectCase(V.Screen.frmTraining!ddlFilter.ItemData)
+		F.Intrinsic.Control.Case(0)
+			'All Records
+			F.Intrinsic.String.Build("Select A.SCHED_ID,D.DEPARTMENT,E.COURSE_NAME,F.COURSE_TYPE,G.PROVIDER_NAME+' | '+CASE WHEN G.PROVIDER_ADDRESS IS NULL THEN '' ELSE G.PROVIDER_ADDRESS END As PROVIDER_NAME,H.LEVEL_NAME,A.STARTDT,A.ENDDT,A.HOURS_SCHED,A.SCHEDULEDDT,Cast(Case When A.SCHEDULEDDT Is Null Then 0 Else 1 End As Bit) As SCHEDULED,A.COMPLETEDT,Cast(Case When A.COMPLETEDT Is Null Then 0 Else 1 End As Bit) As COMPLETED,E.COURSE_ID From GAB_5193_SCHEDULED A Left Join V_EMPLOYEE_MSTR B On A.EMPNO = B.EMPLOYEE Left Join V_PYRL_EMP_NAME C On B.EMPLOYEE = C.EMPL Left Join GAB_5193_DEPTS D On A.DEPT_ID = D.DEPT_ID Left Join GAB_5193_COURSES E On A.COURSE_ID = E.COURSE_ID Left Join GAB_5193_COURSE_TYPE F On A.TYPE_ID = F.TYPE_ID Left Join GAB_5193_PROVIDERS G On A.PROVIDER_ID = G.PROVIDER_ID Left Join GAB_5193_LEVELS H On A.LEVEL_ID = H.LEVEL_ID Where A.STARTDT Between '{0}' And '{1}' And A.EMPNO = '{2}' Order By B.NAME,A.STARTDT;",V.Local.dStartDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Screen.frmTraining!txtEmplNo.Text,V.Local.sSQL)
+			
+		F.Intrinsic.Control.Case(1)
+			'Scheduled
+			F.Intrinsic.String.Build("Select A.SCHED_ID,D.DEPARTMENT,E.COURSE_NAME,F.COURSE_TYPE,G.PROVIDER_NAME+' | '+CASE WHEN G.PROVIDER_ADDRESS IS NULL THEN '' ELSE G.PROVIDER_ADDRESS END As PROVIDER_NAME,H.LEVEL_NAME,A.STARTDT,A.ENDDT,A.HOURS_SCHED,A.SCHEDULEDDT,Cast(Case When A.SCHEDULEDDT Is Null Then 0 Else 1 End As Bit) As SCHEDULED,A.COMPLETEDT,Cast(Case When A.COMPLETEDT Is Null Then 0 Else 1 End As Bit) As COMPLETED,E.COURSE_ID From GAB_5193_SCHEDULED A Left Join V_EMPLOYEE_MSTR B On A.EMPNO = B.EMPLOYEE Left Join V_PYRL_EMP_NAME C On B.EMPLOYEE = C.EMPL Left Join GAB_5193_DEPTS D On A.DEPT_ID = D.DEPT_ID Left Join GAB_5193_COURSES E On A.COURSE_ID = E.COURSE_ID Left Join GAB_5193_COURSE_TYPE F On A.TYPE_ID = F.TYPE_ID Left Join GAB_5193_PROVIDERS G On A.PROVIDER_ID = G.PROVIDER_ID Left Join GAB_5193_LEVELS H On A.LEVEL_ID = H.LEVEL_ID Where A.STARTDT Between '{0}' And '{1}' And A.SCHEDULEDDT Is Not Null And A.EMPNO = '{2}' Order By B.NAME,A.STARTDT;",V.Local.dStartDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Screen.frmTraining!txtEmplNo.Text,V.Local.sSQL)
+			
+		F.Intrinsic.Control.Case(2)
+			'Completed
+			F.Intrinsic.String.Build("Select A.SCHED_ID,D.DEPARTMENT,E.COURSE_NAME,F.COURSE_TYPE,G.PROVIDER_NAME+' | '+CASE WHEN G.PROVIDER_ADDRESS IS NULL THEN '' ELSE G.PROVIDER_ADDRESS END As PROVIDER_NAME,H.LEVEL_NAME,A.STARTDT,A.ENDDT,A.HOURS_SCHED,A.SCHEDULEDDT,Cast(Case When A.SCHEDULEDDT Is Null Then 0 Else 1 End As Bit) As SCHEDULED,A.COMPLETEDT,Cast(Case When A.COMPLETEDT Is Null Then 0 Else 1 End As Bit) As COMPLETED,E.COURSE_ID From GAB_5193_SCHEDULED A Left Join V_EMPLOYEE_MSTR B On A.EMPNO = B.EMPLOYEE Left Join V_PYRL_EMP_NAME C On B.EMPLOYEE = C.EMPL Left Join GAB_5193_DEPTS D On A.DEPT_ID = D.DEPT_ID Left Join GAB_5193_COURSES E On A.COURSE_ID = E.COURSE_ID Left Join GAB_5193_COURSE_TYPE F On A.TYPE_ID = F.TYPE_ID Left Join GAB_5193_PROVIDERS G On A.PROVIDER_ID = G.PROVIDER_ID Left Join GAB_5193_LEVELS H On A.LEVEL_ID = H.LEVEL_ID Where A.STARTDT Between '{0}' And '{1}' And A.COMPLETEDT Is Not Null And A.EMPNO = '{2}' Order By B.NAME,A.STARTDT;",V.Local.dStartDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Screen.frmTraining!txtEmplNo.Text,V.Local.sSQL)
+			
+	F.Intrinsic.Control.EndSelect
+	
+	F.Data.DataTable.CreateFromSQL("dtEmplTrainings","con",V.Local.sSQL,True)
+	V.Global.bLoadDataEmplTrain.Set(True)
+	
+	F.Intrinsic.Control.CallSub(LoadEmplTrainingsGV)
+	F.Intrinsic.Control.CallSub(DeserializeEmplTrain)
+	
+	Gui.frmTraining.lblStatus.Visible(False)
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.LoadEmplTrainings.End
+
+Program.Sub.LoadEmplTrainingsGV.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	V.Local.sValues.Declare
+	V.Local.iCnt.Declare
+	V.Local.sColumns.Declare
+	
+	'Set and Format Grid
+	Gui.frmTraining.GsGCCourses.AddGridViewFromDataTable("gvEmplTrainings","dtEmplTrainings")
+	Gui.frmTraining.GsGCCourses.Icon(V.Global.sGsGCIcon)
+	Gui.frmTraining.GsGCCourses.SuspendLayout()
+	Gui.frmTraining.GsGCCourses.SetGridViewProperty("gvEmplTrainings","MultiSelect",True)
+	Gui.frmTraining.GsGCCourses.SetGridViewProperty("gvEmplTrainings","AllowSort",True)
+	Gui.frmTraining.GsGCCourses.SetGridViewProperty("gvEmplTrainings","AllowFilter",True)
+	Gui.frmTraining.GsGCCourses.SetGridViewProperty("gvEmplTrainings","OptionsDetailShowDetailTabs",False)
+	Gui.frmTraining.GsGCCourses.SetGridViewProperty("gvEmplTrainings","OptionsViewShowGroupPanel",True)
+	Gui.frmTraining.GsGCCourses.SetGridViewProperty("gvEmplTrainings","EnableAppearanceOddRow",True)
+	Gui.frmTraining.GsGCCourses.SetGridViewProperty("gvEmplTrainings","OptionsFindAlwaysVisible",False)
+	Gui.frmTraining.GsGCCourses.SetGridViewProperty("gvEmplTrainings","OptionsViewShowAutoFilterRow",True)
+
+	'Loop through columns names by using the V.DataTable.dtName.FieldNames
+	F.Intrinsic.String.Split(V.DataTable.dtEmplTrainings.FieldNames,"*!*",V.Local.sColumns)
+	F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sColumns.UBound,1)
+		Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings",V.Local.sColumns(V.Local.iCnt),"HeaderFontBold",True)
+		'Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings",V.Local.sColumns(V.Local.iCnt),"HeaderHAlignment","Center")
+	F.Intrinsic.Control.Next(V.Local.iCnt)
+
+	'SCHED_ID
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHED_ID","Visible",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHED_ID","Caption","Sched ID")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHED_ID","MinWidth","65")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHED_ID","AllowEdit",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHED_ID","ReadOnly",True)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHED_ID","HeaderHAlignment","Center")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHED_ID","CellHAlignment","Center")
+	Gui.frmTraining.GsGCCourses.AddSummaryItem("gvEmplTrainings","SCHED_ID","SCHED_ID","COUNT","Count: ","",n0)
+
+	'DEPARTMENT
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","DEPARTMENT","Caption","Dept.")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","DEPARTMENT","MinWidth","95")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","DEPARTMENT","AllowEdit",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","DEPARTMENT","ReadOnly",True)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","DEPARTMENT","HeaderHAlignment","Left")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","DEPARTMENT","CellHAlignment","Left")
+
+	'COURSE_NAME
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_NAME","Caption","Course")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_NAME","MinWidth","130")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_NAME","AllowEdit",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_NAME","ReadOnly",True)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_NAME","HeaderHAlignment","Left")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_NAME","CellHAlignment","Left")
+
+	'COURSE_TYPE
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_TYPE","Caption","Type")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_TYPE","MinWidth","85")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_TYPE","AllowEdit",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_TYPE","ReadOnly",True)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_TYPE","HeaderHAlignment","Left")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_TYPE","CellHAlignment","Left")
+
+	'PROVIDER_NAME
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","PROVIDER_NAME","Caption","Provider")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","PROVIDER_NAME","MinWidth","130")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","PROVIDER_NAME","AllowEdit",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","PROVIDER_NAME","ReadOnly",True)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","PROVIDER_NAME","HeaderHAlignment","Left")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","PROVIDER_NAME","CellHAlignment","Left")
+
+	'LEVEL_NAME
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","LEVEL_NAME","Caption","Level")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","LEVEL_NAME","MinWidth","85")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","LEVEL_NAME","AllowEdit",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","LEVEL_NAME","ReadOnly",True)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","LEVEL_NAME","HeaderHAlignment","Left")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","LEVEL_NAME","CellHAlignment","Left")
+
+	'STARTDT
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","STARTDT","Caption","Start Date")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","STARTDT","MinWidth","115")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","STARTDT","AllowEdit",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","STARTDT","ReadOnly",True)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","STARTDT","HeaderHAlignment","Center")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","STARTDT","CellHAlignment","Center")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","STARTDT","DisplayCustomDatetime","g")
+	
+	'ENDDT
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","ENDDT","Caption","End Date")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","ENDDT","MinWidth","85")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","ENDDT","AllowEdit",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","ENDDT","ReadOnly",True)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","ENDDT","HeaderHAlignment","Center")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","ENDDT","CellHAlignment","Center")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","ENDDT","DisplayCustomDatetime","d")
+
+	'HOURS_SCHED
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","HOURS_SCHED","Caption","Hours Sched.")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","HOURS_SCHED","MinWidth","85")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","HOURS_SCHED","AllowEdit",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","HOURS_SCHED","ReadOnly",True)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","HOURS_SCHED","HeaderHAlignment","Far")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","HOURS_SCHED","CellHAlignment","Far")
+
+	'SCHEDULEDDT
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHEDULEDDT","Caption","Sched. Date")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHEDULEDDT","MinWidth","115")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHEDULEDDT","AllowEdit",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHEDULEDDT","ReadOnly",True)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHEDULEDDT","HeaderHAlignment","Center")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHEDULEDDT","CellHAlignment","Center")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHEDULEDDT","DisplayCustomDatetime","g")
+
+	'SCHEDULED
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHEDULED","Caption","Scheduled")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHEDULED","MinWidth","85")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHEDULED","AllowEdit",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHEDULED","ReadOnly",True)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHEDULED","HeaderHAlignment","Center")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","SCHEDULED","CellHAlignment","Center")
+
+	'COMPLETEDT
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COMPLETEDT","Caption","Compl. Date")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COMPLETEDT","MinWidth","115")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COMPLETEDT","AllowEdit",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COMPLETEDT","ReadOnly",True)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COMPLETEDT","HeaderHAlignment","Center")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COMPLETEDT","CellHAlignment","Center")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COMPLETEDT","DisplayCustomDatetime","g")
+
+	'COMPLETED
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COMPLETED","Caption","Completed")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COMPLETED","MinWidth","85")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COMPLETED","AllowEdit",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COMPLETED","ReadOnly",True)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COMPLETED","HeaderHAlignment","Center")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COMPLETED","CellHAlignment","Center")
+	
+	'COURSE_ID
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_ID","Visible",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_ID","Caption","Course ID")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_ID","MinWidth","55")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_ID","AllowEdit",False)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_ID","ReadOnly",True)
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_ID","HeaderHAlignment","Center")
+	Gui.frmTraining.GsGCCourses.SetColumnProperty("gvEmplTrainings","COURSE_ID","CellHAlignment","Center")
+
+	Gui.frmTraining.GsGCCourses.ResumeLayout()
+	Gui.frmTraining.GsGCCourses.MainView("gvEmplTrainings")
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.LoadEmplTrainingsGV.End
+
+Program.Sub.SerializeEmplTrain.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sSerialize.Declare
+	
+	Gui.frmTraining.GsGCCourses.Serialize("gvEmplTrainings",V.Local.sSerialize)
+	F.Global.Registry.AddValue(V.Caller.User,V.Caller.CompanyCode,"GVEMPLTRAININGS",5193,2000,False,"Serialize",False,0,-999.0,1/1/1980,12:00:00 AM,V.Local.sSerialize)
+	
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End
+	F.Intrinsic.Control.EndTry
+Program.Sub.SerializeEmplTrain.End
+
+Program.Sub.DeserializeEmplTrain.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sSerialize.Declare
+	
+	F.Global.Registry.ReadValue(V.Caller.User,V.Caller.CompanyCode,"GVEMPLTRAININGS",5193,2000,6,"",V.Local.sSerialize)
+	F.Intrinsic.Control.If(V.Local.sSerialize.Trim,<>,"")
+		Gui.frmTraining.GsGCCourses.Deserialize(V.Local.sSerialize)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End
+	F.Intrinsic.Control.EndTry
+Program.Sub.DeserializeEmplTrain.End
+
+Program.Sub.frmViewNotes_UnLoad.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	'Close View Notes Screen
+	Gui.frmViewNotes..Visible(False)
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.frmViewNotes_UnLoad.End
+
+Program.Sub.LoadViewNotes.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sSQL.Declare
+
+	F.Intrinsic.Control.If(V.DataTable.dtViewNotes.Exists)
+		F.Data.DataTable.Close("dtViewNotes")
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.String.Build("Select * From GAB_5193_SCHED_NOTES Where SCHED_ID = {0} Order By NOTEDT DESC;",V.Global.iSchedID,V.Local.sSQL)
+	F.Data.DataTable.CreateFromSQL("dtViewNotes","con",V.Local.sSQL,True)
+	
+	F.Intrinsic.Control.CallSub(LoadViewNotesGV)
+	
+	'Show screen
+	Gui.frmViewNotes..Show
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.LoadViewNotes.End
+
+Program.Sub.LoadViewNotesGV.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	V.Local.iCnt.Declare
+	V.Local.sColumns.Declare
+
+	'Set and Format Grid
+	Gui.frmViewNotes.GsGCViewNotes.AddGridViewFromDataTable("gvViewNotes","dtViewNotes")
+	Gui.frmViewNotes.GsGCViewNotes.SuspendLayout()
+	Gui.frmViewNotes.GsGCViewNotes.SetGridViewProperty("gvViewNotes","MultiSelect",True)
+	Gui.frmViewNotes.GsGCViewNotes.SetGridViewProperty("gvViewNotes","Editable",False)
+	Gui.frmViewNotes.GsGCViewNotes.SetGridViewProperty("gvViewNotes","ReadOnly",True)
+	Gui.frmViewNotes.GsGCViewNotes.SetGridViewProperty("gvViewNotes","AllowSort",True)
+	Gui.frmViewNotes.GsGCViewNotes.SetGridViewProperty("gvViewNotes","AllowFilter",True)
+	Gui.frmViewNotes.GsGCViewNotes.SetGridViewProperty("gvViewNotes","OptionsDetailShowDetailTabs",False)
+	Gui.frmViewNotes.GsGCViewNotes.SetGridViewProperty("gvViewNotes","OptionsViewShowGroupPanel",False)
+	Gui.frmViewNotes.GsGCViewNotes.SetGridViewProperty("gvViewNotes","EnableAppearanceOddRow",True)
+	Gui.frmViewNotes.GsGCViewNotes.SetGridViewProperty("gvViewNotes","OptionsFindAlwaysVisible",False)
+	
+	'Loop through columns names by using the V.DataTable.dtName.FieldNames
+	F.Intrinsic.String.Split(V.DataTable.dtViewNotes.FieldNames,"*!*",V.Local.sColumns)
+	F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sColumns.UBound,1)
+		Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes",V.Local.sColumns(V.Local.iCnt),"HeaderFontBold",True)
+		'Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes",V.Local.sColumns(V.Local.iCnt),"HeaderHAlignment","Center")
+	F.Intrinsic.Control.Next(V.Local.iCnt)
+	
+	'SCHED_NT_ID
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","SCHED_NT_ID","Visible",False)
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","SCHED_NT_ID","Caption","Sched Note ID")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","SCHED_NT_ID","MinWidth","55")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","SCHED_NT_ID","HeaderHAlignment","Center")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","SCHED_NT_ID","CellHAlignment","Center")
+
+	'SCHED_ID
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","SCHED_ID","Visible",False)
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","SCHED_ID","Caption","Sched ID")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","SCHED_ID","MinWidth","55")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","SCHED_ID","HeaderHAlignment","Center")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","SCHED_ID","CellHAlignment","Center")
+	
+	'GS_USER
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","GS_USER","Caption","User")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","GS_USER","MinWidth","55")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","GS_USER","HeaderHAlignment","Center")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","GS_USER","CellHAlignment","Center")
+	
+	'NOTEDT
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","NOTEDT","Caption","Date/Time")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","NOTEDT","MinWidth","100")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","NOTEDT","HeaderHAlignment","Center")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","NOTEDT","CellHAlignment","Center")
+	
+	'NOTE
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","NOTE","Caption","Note")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","NOTE","MinWidth","125")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","NOTE","HeaderHAlignment","Left")
+	Gui.frmViewNotes.GsGCViewNotes.SetColumnProperty("gvViewNotes","NOTE","CellHAlignment","Left")
+	
+	Gui.frmViewNotes.GsGCViewNotes.ResumeLayout()
+	Gui.frmViewNotes.GsGCViewNotes.MainView("gvViewNotes")
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.LoadViewNotesGV.End
+
+Program.Sub.GsGCViewNotes_RowCellClick.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	Gui.frmViewNotes.txtViewNotes.Text(V.DataTable.dtViewNotes(V.Args.RowIndex).NOTE!FieldVal)
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.GsGCViewNotes_RowCellClick.End
+
+Program.Sub.frmDocs_UnLoad.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	'Close View Notes Screen
+	Gui.frmDocs..Visible(False)
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.frmDocs_UnLoad.End
+
+Program.Sub.LoadViewDocs.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	V.Local.sSQL.Declare
+
+	F.Intrinsic.Control.If(V.DataTable.dtViewDocs.Exists)
+		F.Data.DataTable.Close("dtViewDocs")
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.String.Build("Select Cast(0 As Bit) As SEL,COURSE_DOC_ID As ID,'GAB_5193_COURSE_DOCS' As TBL,TYPES,DOC_PATH,DOC_TITLE,DOC_REV,ACTIVE From GAB_5193_COURSE_DOCS A Join GAB_5193_DOC_TYPE B On A.DOC_TYPE_ID = B.DOC_TYPE_ID Where COURSE_ID = {0} And ACTIVE = 1 Union Select Cast(0 As Bit) As SEL,SCHED_DOC_ID As ID,'GAB_5193_SCHED_DOCS' As TBL,TYPES,SCHED_DOC_PATH,SCHED_DOC_TITLE,SCHED_DOC_REV,SCHED_ACTIVE From GAB_5193_SCHED_DOCS A Join GAB_5193_DOC_TYPE B On A.DOC_TYPE_ID = B.DOC_TYPE_ID Where SCHED_ID = {1} And SCHED_ACTIVE = 1 Order By TBL;",V.Global.iCourseID,V.Global.iSchedID,V.Local.sSQL)
+	F.Data.DataTable.CreateFromSQL("dtViewDocs","con",V.Local.sSQL,True)
+	
+	F.Intrinsic.Control.CallSub(LoadViewDocsGV)
+	
+	'Show screen
+	Gui.frmDocs..Show
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.LoadViewDocs.End
+
+Program.Sub.LoadViewDocsGV.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	V.Local.iCnt.Declare
+	V.Local.sColumns.Declare
+
+	'Set and Format Grid
+	Gui.frmDocs.GsGCDocs.AddGridViewFromDataTable("gvViewDocs","dtViewDocs")
+	Gui.frmDocs.GsGCDocs.SuspendLayout()
+	Gui.frmDocs.GsGCDocs.SetGridViewProperty("gvViewDocs","MultiSelect",True)
+	Gui.frmDocs.GsGCDocs.SetGridViewProperty("gvViewDocs","AllowSort",True)
+	Gui.frmDocs.GsGCDocs.SetGridViewProperty("gvViewDocs","AllowFilter",True)
+	Gui.frmDocs.GsGCDocs.SetGridViewProperty("gvViewDocs","OptionsDetailShowDetailTabs",False)
+	Gui.frmDocs.GsGCDocs.SetGridViewProperty("gvViewDocs","OptionsViewShowGroupPanel",False)
+	Gui.frmDocs.GsGCDocs.SetGridViewProperty("gvViewDocs","EnableAppearanceOddRow",True)
+	Gui.frmDocs.GsGCDocs.SetGridViewProperty("gvViewDocs","OptionsFindAlwaysVisible",False)
+	
+	'Loop through columns names by using the V.DataTable.dtName.FieldNames
+	F.Intrinsic.String.Split(V.DataTable.dtViewDocs.FieldNames,"*!*",V.Local.sColumns)
+	F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sColumns.UBound,1)
+		Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs",V.Local.sColumns(V.Local.iCnt),"HeaderFontBold",True)
+		'Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs",V.Local.sColumns(V.Local.iCnt),"HeaderHAlignment","Center")
+	F.Intrinsic.Control.Next(V.Local.iCnt)
+	
+	'SEL
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","SEL","Caption","Select")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","SEL","MinWidth","45")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","SEL","AllowEdit",True)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","SEL","ReadOnly",False)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","SEL","HeaderHAlignment","Center")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","SEL","CellHAlignment","Center")
+	
+	'ID
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","ID","Visible",False)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","ID","Caption","ID")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","ID","MinWidth","55")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","ID","AllowEdit",False)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","ID","ReadOnly",True)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","ID","HeaderHAlignment","Center")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","ID","CellHAlignment","Center")
+
+	'TBL
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","TBL","Visible",False)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","TBL","Caption","Table")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","TBL","MinWidth","55")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","TBL","AllowEdit",False)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","TBL","ReadOnly",True)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","TBL","HeaderHAlignment","Center")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","TBL","CellHAlignment","Center")
+	
+	'TYPES
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","TYPES","Caption","Type")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","TYPES","MinWidth","100")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","TYPES","AllowEdit",False)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","TYPES","ReadOnly",True)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","TYPES","HeaderHAlignment","Left")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","TYPES","CellHAlignment","Left")
+	
+	'DOC_PATH
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_PATH","Visible",False)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_PATH","Caption","Doc Path")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_PATH","MinWidth","55")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_PATH","AllowEdit",False)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_PATH","ReadOnly",True)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_PATH","HeaderHAlignment","Center")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_PATH","CellHAlignment","Center")
+	
+	'DOC_TITLE
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_TITLE","Caption","File Name")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_TITLE","MinWidth","100")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_TITLE","AllowEdit",False)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_TITLE","ReadOnly",True)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_TITLE","HeaderHAlignment","Left")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_TITLE","CellHAlignment","Left")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_TITLE","CellForeColor","Blue")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_TITLE","CellFontUnderline",True)
+	
+	'DOC_REV
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_REV","Visible",False)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_REV","Caption","Doc Rev")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_REV","MinWidth","55")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_REV","AllowEdit",False)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_REV","ReadOnly",True)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_REV","HeaderHAlignment","Center")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","DOC_REV","CellHAlignment","Center")
+	
+	'ACTIVE
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","ACTIVE","Visible",False)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","ACTIVE","Caption","Note")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","ACTIVE","MinWidth","55")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","ACTIVE","AllowEdit",False)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","ACTIVE","ReadOnly",True)
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","ACTIVE","HeaderHAlignment","Center")
+	Gui.frmDocs.GsGCDocs.SetColumnProperty("gvViewDocs","ACTIVE","CellHAlignment","Center")
+	
+	Gui.frmDocs.GsGCDocs.ResumeLayout()
+	Gui.frmDocs.GsGCDocs.MainView("gvViewDocs")
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.LoadViewDocsGV.End
+
+Program.Sub.GsGCDocs_RowCellClick.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sDocPath.Declare
+	
+	F.Intrinsic.Control.SelectCase(V.Args.Column)
+		F.Intrinsic.Control.Case("DOC_TITLE")
+			F.Intrinsic.Control.If(V.DataTable.dtViewDocs(V.Args.RowIndex).DOC_TITLE!FieldVal,<>,"")
+				F.Intrinsic.String.Build("{0}{1}",V.DataTable.dtViewDocs(V.Args.RowIndex).DOC_PATH!FieldVal,V.DataTable.dtViewDocs(V.Args.RowIndex).DOC_TITLE!FieldVal,V.Local.sDocPath)
+				F.Intrinsic.Task.ShellExec(0,"",V.Local.sDocPath,"","",1)
+			F.Intrinsic.Control.EndIf
+			
+	F.Intrinsic.Control.EndSelect
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.GsGCDocs_RowCellClick.End
+
+Program.Sub.frmRenewals_UnLoad.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	F.Intrinsic.Control.If(V.Global.bLoadDataRenewal)
+		F.Intrinsic.Control.CallSub(SerializeRenewal)
+	F.Intrinsic.Control.EndIf
+
+	Gui.frmRenewals..Visible(False)
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.frmRenewals_UnLoad.End
+
+Program.Sub.LoadRenewalStatus.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.iCnt.Declare
+	V.Local.sExp.Declare
+	V.Local.sSelect.Declare
+	
+	F.Intrinsic.Control.If(V.Global.bLoadDataRenewal)
+		F.Intrinsic.Control.CallSub(SerializeRenewal)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.DataTable.dtRenew.Exists)
+		F.Data.DataTable.Close("dtRenew")
+	F.Intrinsic.Control.EndIf
+
+	F.Data.DataTable.CreateFromSQL("dtRenewal","con","Select A.SCHED_ID,B.EMPNO,RTRIM(E.FIRST)+' '+RTRIM(E.LAST) AS EMPLOYEE,E.FIRST,E.LAST,B.COURSE_ID,D.COURSE_NAME,A.SKILL_ID,C.SKILL,B.COMPLETEDT,C.RENEWAL_VALUE,C.RENEWAL_FREQ,Convert(Case When C.RENEWAL_FREQ = 'Day(s)' Then DateAdd(DAY,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Week(s)' Then DateAdd(WEEK,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Month(s)' Then DateAdd(MONTH,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Year(s)' Then DateAdd(YEAR,C.RENEWAL_VALUE,B.COMPLETEDT) End,SQL_DATE) As RENEWALDT,Case When DateDiff(DAY,CURDATE(),Convert(Case When C.RENEWAL_FREQ = 'Day(s)' Then DateAdd(DAY,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Week(s)' Then DateAdd(WEEK,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Month(s)' Then DateAdd(MONTH,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Year(s)' Then DateAdd(YEAR,C.RENEWAL_VALUE,B.COMPLETEDT) End,SQL_DATE)) > 365 Then 0 When DateDiff(DAY,CURDATE(),Convert(Case When C.RENEWAL_FREQ = 'Day(s)' Then DateAdd(DAY,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Week(s)' Then DateAdd(WEEK,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Month(s)' Then DateAdd(MONTH,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Year(s)' Then DateAdd(YEAR,C.RENEWAL_VALUE,B.COMPLETEDT) End,SQL_DATE)) <= 365 And DateDiff(DAY,CURDATE(),Convert(Case When C.RENEWAL_FREQ = 'Day(s)' Then DateAdd(DAY,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Week(s)' Then DateAdd(WEEK,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Month(s)' Then DateAdd(MONTH,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Year(s)' Then DateAdd(YEAR,C.RENEWAL_VALUE,B.COMPLETEDT) End,SQL_DATE)) >= 31 Then 1 When DateDiff(DAY,CURDATE(),Convert(Case When C.RENEWAL_FREQ = 'Day(s)' Then DateAdd(DAY,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Week(s)' Then DateAdd(WEEK,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Month(s)' Then DateAdd(MONTH,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Year(s)' Then DateAdd(YEAR,C.RENEWAL_VALUE,B.COMPLETEDT) End,SQL_DATE)) <= 30 And DateDiff(DAY,CURDATE(),Convert(Case When C.RENEWAL_FREQ = 'Day(s)' Then DateAdd(DAY,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Week(s)' Then DateAdd(WEEK,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Month(s)' Then DateAdd(MONTH,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Year(s)' Then DateAdd(YEAR,C.RENEWAL_VALUE,B.COMPLETEDT) End,SQL_DATE)) >= 8 Then 2 When DateDiff(DAY,CURDATE(),Convert(Case When C.RENEWAL_FREQ = 'Day(s)' Then DateAdd(DAY,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Week(s)' Then DateAdd(WEEK,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Month(s)' Then DateAdd(MONTH,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Year(s)' Then DateAdd(YEAR,C.RENEWAL_VALUE,B.COMPLETEDT) End,SQL_DATE)) <= 7 And DateDiff(DAY,CURDATE(),Convert(Case When C.RENEWAL_FREQ = 'Day(s)' Then DateAdd(DAY,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Week(s)' Then DateAdd(WEEK,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Month(s)' Then DateAdd(MONTH,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Year(s)' Then DateAdd(YEAR,C.RENEWAL_VALUE,B.COMPLETEDT) End,SQL_DATE)) >= 0 Then 3 When DateDiff(DAY,CURDATE(),Convert(Case When C.RENEWAL_FREQ = 'Day(s)' Then DateAdd(DAY,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Week(s)' Then DateAdd(WEEK,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Month(s)' Then DateAdd(MONTH,C.RENEWAL_VALUE,B.COMPLETEDT) When C.RENEWAL_FREQ = 'Year(s)' Then DateAdd(YEAR,C.RENEWAL_VALUE,B.COMPLETEDT) End,SQL_DATE)) < 0 Then 4 End As STATUS From GAB_5193_SCHED_SKILL A Join GAB_5193_SCHEDULED B On A.SCHED_ID = B.SCHED_ID And COMPLETEDT Is Not Null Join GAB_5193_SKILLS C On A.SKILL_ID = C.SKILL_ID Join GAB_5193_COURSES D On B.COURSE_ID = D.COURSE_ID Join V_PYRL_EMP_NAME E On B.EMPNO = E.EMPL Order By B.EMPNO,E.FIRST,E.LAST,B.COURSE_ID,A.SKILL_ID,B.COMPLETEDT DESC;",True)
+	
+	F.Data.DataView.Create("dtRenewal","dvRenewal")
+	F.Data.DataView.ToDataTableDistinct("dtRenewal","dvRenewal","dtRenew","EMPNO*!*EMPLOYEE*!*FIRST*!*LAST*!*COURSE_ID*!*COURSE_NAME*!*SKILL_ID*!*SKILL",True)
+	F.Data.DataTable.AddColumn("dtRenew","COMPLETEDT",Date)
+	F.Data.DataTable.AddColumn("dtRenew","RENEWALDT",Date)
+	F.Data.DataTable.AddColumn("dtRenew","STATUS",Long)
+	F.Data.DataView.Close("dtRenewal","dvRenewal")
+	
+	F.Intrinsic.Control.For(V.Local.iCnt,0,V.DataTable.dtRenew.RowCount--,1)
+		F.Intrinsic.String.Build("EMPNO = '{0}' And EMPLOYEE = '{1}' And FIRST = '{2}' And LAST = '{3}' And COURSE_ID = '{4}' And COURSE_NAME = '{5}' And SKILL_ID = '{6}' And SKILL = '{7}'",V.DataTable.dtRenewal(V.Local.iCnt).EMPNO!FieldVal,V.DataTable.dtRenewal(V.Local.iCnt).EMPLOYEE!FieldVal,V.DataTable.dtRenewal(V.Local.iCnt).FIRST!FieldVal,V.DataTable.dtRenewal(V.Local.iCnt).LAST!FieldVal,V.DataTable.dtRenewal(V.Local.iCnt).COURSE_ID!FieldVal,V.DataTable.dtRenewal(V.Local.iCnt).COURSE_NAME!FieldVal,V.DataTable.dtRenewal(V.Local.iCnt).SKILL_ID!FieldVal,V.DataTable.dtRenewal(V.Local.iCnt).SKILL!FieldVal,V.Local.sExp)
+		F.Data.DataTable.Select("dtRenewal",v.Local.sExp,V.Local.sSelect)
+		F.Intrinsic.String.Split(V.Local.sSelect,"*!*",V.Local.sSelect)
+		F.Data.DataTable.SetValue("dtRenew",V.Local.iCnt,"COMPLETEDT",V.DataTable.dtRenewal(V.Local.sSelect(0)).COMPLETEDT!FieldVal,"RENEWALDT",V.DataTable.dtRenewal(V.Local.sSelect(0)).RENEWALDT!FieldVal,"STATUS",V.DataTable.dtRenewal(V.Local.sSelect(0)).STATUS!FieldVal)
+	F.Intrinsic.Control.Next(V.Local.iCnt)
+	
+	F.Data.DataTable.Close("dtRenewal")
+	
+	V.Global.bLoadDataRenewal.Set(True)
+	F.Intrinsic.Control.CallSub(LoadRenewalStatusGV)
+	F.Intrinsic.Control.CallSub(DeserializeRenewal)
+	
+	'Show Screen
+	Gui.frmRenewals..Show
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.LoadRenewalStatus.End
+
+Program.Sub.LoadRenewalStatusGV.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	V.Local.iCnt.Declare
+	V.Local.sColumns.Declare
+
+	'Set and Format Grid
+	Gui.frmRenewals.GsGCRenewals.AddGridViewFromDataTable("gvRenew","dtRenew")
+	Gui.frmRenewals.GsGCRenewals.SuspendLayout()
+	Gui.frmRenewals.GsGCRenewals.SetGridViewProperty("gvRenew","MultiSelect",True)
+	Gui.frmRenewals.GsGCRenewals.SetGridViewProperty("gvRenew","Editable",False)
+	Gui.frmRenewals.GsGCRenewals.SetGridViewProperty("gvRenew","ReadOnly",True)
+	Gui.frmRenewals.GsGCRenewals.SetGridViewProperty("gvRenew","AllowSort",True)
+	Gui.frmRenewals.GsGCRenewals.SetGridViewProperty("gvRenew","AllowFilter",True)
+	Gui.frmRenewals.GsGCRenewals.SetGridViewProperty("gvRenew","OptionsDetailShowDetailTabs",False)
+	Gui.frmRenewals.GsGCRenewals.SetGridViewProperty("gvRenew","OptionsViewShowGroupPanel",True)
+	Gui.frmRenewals.GsGCRenewals.SetGridViewProperty("gvRenew","OptionsFindAlwaysVisible",False)
+	
+	'Loop through columns names by using the V.DataTable.dtName.FieldNames
+	F.Intrinsic.String.Split(V.DataTable.dtRenew.FieldNames,"*!*",V.Local.sColumns)
+	F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sColumns.UBound,1)
+		Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew",V.Local.sColumns(V.Local.iCnt),"HeaderFontBold",True)
+		'Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew",V.Local.sColumns(V.Local.iCnt),"HeaderHAlignment","Center")
+	F.Intrinsic.Control.Next(V.Local.iCnt)
+	
+	'EMPNO
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","EMPNO","Visible",False)
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","EMPNO","Caption","Emp No")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","EMPNO","MinWidth","45")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","EMPNO","HeaderHAlignment","Center")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","EMPNO","CellHAlignment","Center")
+	
+	'EMPLOYEE
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","EMPLOYEE","Caption","Emp Name")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","EMPLOYEE","MinWidth","150")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","EMPLOYEE","HeaderHAlignment","Left")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","EMPLOYEE","CellHAlignment","Left")
+
+	'FIRST
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","FIRST","Caption","First Name")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","FIRST","MinWidth","100")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","FIRST","HeaderHAlignment","Left")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","FIRST","CellHAlignment","Left")
+	
+	'LAST
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","LAST","Caption","Last Name")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","LAST","MinWidth","100")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","LAST","HeaderHAlignment","Left")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","LAST","CellHAlignment","Left")
+	
+	'COURSE_ID
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","COURSE_ID","Visible",False)
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","COURSE_ID","Caption","Course ID")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","COURSE_ID","MinWidth","55")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","COURSE_ID","HeaderHAlignment","Center")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","COURSE_ID","CellHAlignment","Center")
+	
+	'COURSE_NAME
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","COURSE_NAME","Caption","Coure Name")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","COURSE_NAME","MinWidth","125")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","COURSE_NAME","HeaderHAlignment","Left")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","COURSE_NAME","CellHAlignment","Left")
+	
+	'SKILL_ID
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","SKILL_ID","Visible",False)
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","SKILL_ID","Caption","Skill ID")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","SKILL_ID","MinWidth","55")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","SKILL_ID","HeaderHAlignment","Center")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","SKILL_ID","CellHAlignment","Center")
+	
+	'SKILL
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","SKILL","Caption","Skill")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","SKILL","MinWidth","125")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","SKILL","HeaderHAlignment","Left")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","SKILL","CellHAlignment","Left")
+	
+	'COMPLETEDT
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","COMPLETEDT","Caption","Complete Date")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","COMPLETEDT","MinWidth","85")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","COMPLETEDT","HeaderHAlignment","Center")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","COMPLETEDT","CellHAlignment","Center")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","COMPLETEDT","DisplayCustomDatetime","d")
+	
+	'RENEWALDT
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","RENEWALDT","Caption","Renewal Date")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","RENEWALDT","MinWidth","85")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","RENEWALDT","HeaderHAlignment","Center")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","RENEWALDT","CellHAlignment","Center")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","RENEWALDT","DisplayCustomDatetime","d")
+	
+	'STATUS
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","STATUS","Caption","Status")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","STATUS","MinWidth","45")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","STATUS","HeaderHAlignment","Center")
+	Gui.frmRenewals.GsGCRenewals.SetColumnProperty("gvRenew","STATUS","CellHAlignment","Center")
+	
+	'Formatting
+	Gui.frmRenewals.GsGCRenewals.AddStyleFormatCondition("gvRenew","STATUS","STATUS0","Equal",1)
+	Gui.frmRenewals.GsGCRenewals.SetStyleFormatConditionProperty("gvRenew","STATUS","STATUS0","BackColor","LightGoldenRodYellow")
+	Gui.frmRenewals.GsGCRenewals.SetStyleFormatConditionProperty("gvRenew","STATUS","STATUS0","ApplyToRow",True)
+	
+	Gui.frmRenewals.GsGCRenewals.AddStyleFormatCondition("gvRenew","STATUS","STATUS1","Equal",2)
+	Gui.frmRenewals.GsGCRenewals.SetStyleFormatConditionProperty("gvRenew","STATUS","STATUS1","BackColor","GoldenRod")
+	Gui.frmRenewals.GsGCRenewals.SetStyleFormatConditionProperty("gvRenew","STATUS","STATUS1","ApplyToRow",True)
+	
+	Gui.frmRenewals.GsGCRenewals.AddStyleFormatCondition("gvRenew","STATUS","STATUS2","Equal",3)
+	Gui.frmRenewals.GsGCRenewals.SetStyleFormatConditionProperty("gvRenew","STATUS","STATUS2","BackColor","Orange")
+	Gui.frmRenewals.GsGCRenewals.SetStyleFormatConditionProperty("gvRenew","STATUS","STATUS2","ApplyToRow",True)
+	
+	Gui.frmRenewals.GsGCRenewals.AddStyleFormatCondition("gvRenew","STATUS","STATUS4","Equal",4)
+	Gui.frmRenewals.GsGCRenewals.SetStyleFormatConditionProperty("gvRenew","STATUS","STATUS4","BackColor","Red")
+	Gui.frmRenewals.GsGCRenewals.SetStyleFormatConditionProperty("gvRenew","STATUS","STATUS4","ApplyToRow",True)
+	
+	Gui.frmRenewals.GsGCRenewals.ResumeLayout()
+	Gui.frmRenewals.GsGCRenewals.MainView("gvRenew")
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.LoadRenewalStatusGV.End
+
+Program.Sub.SerializeRenewal.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sSerialize.Declare
+	
+	Gui.frmRenewals.GsGCRenewals.Serialize("gvRenew",V.Local.sSerialize)
+	F.Global.Registry.AddValue(V.Caller.User,V.Caller.CompanyCode,"GVRENEW",5193,4000,False,"Serialize",False,0,-999.0,1/1/1980,12:00:00 AM,V.Local.sSerialize)
+	
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End
+	F.Intrinsic.Control.EndTry
+Program.Sub.SerializeRenewal.End
+
+Program.Sub.DeserializeRenewal.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sSerialize.Declare
+	
+	F.Global.Registry.ReadValue(V.Caller.User,V.Caller.CompanyCode,"GVRENEW",5193,4000,6,"",V.Local.sSerialize)
+	F.Intrinsic.Control.If(V.Local.sSerialize.Trim,<>,"")
+		Gui.frmRenewals.GsGCRenewals.Deserialize(V.Local.sSerialize)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End
+	F.Intrinsic.Control.EndTry
+Program.Sub.DeserializeRenewal.End
+
+Program.Sub.Comments.Start
+Program.Sub.Comments.End
