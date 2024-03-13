@@ -1,0 +1,1283 @@
+Program.Sub.ScreenSU.Start
+Gui.frmSetup..Create
+Gui.frmSetup..Caption("Employee Training Setup")
+Gui.frmSetup..Size(9360,9240)
+Gui.frmSetup..MinX(0)
+Gui.frmSetup..MinY(0)
+Gui.frmSetup..Position(0,0)
+Gui.frmSetup..BackColor(-2147483633)
+Gui.frmSetup..MousePointer(0)
+Gui.frmSetup..Event(UnLoad,frmSetup_UnLoad)
+Gui.frmSetup.ddlSetup.Create(DropDownList)
+Gui.frmSetup.ddlSetup.Size(2850,330)
+Gui.frmSetup.ddlSetup.Position(45,45)
+Gui.frmSetup.ddlSetup.Event(Click,ddlSetup_Click)
+Gui.frmSetup.GsGCSetup.Create(GsGridControl)
+Gui.frmSetup.GsGCSetup.Size(9180,8085)
+Gui.frmSetup.GsGCSetup.Position(45,435)
+Gui.frmSetup.GsGCSetup.Anchor(15)
+Gui.frmSetup.GsGCSetup.Event(RowCellClick,GsGCSetup_RowCellClick)
+Gui.frmSetup.cmdSave.Create(Button)
+Gui.frmSetup.cmdSave.Size(855,375)
+Gui.frmSetup.cmdSave.Position(8370,8550)
+Gui.frmSetup.cmdSave.Caption("Save")
+Gui.frmSetup.cmdSave.Event(Click,cmdSave_Click)
+Gui.frmSetup.cmdSave.Anchor(10)
+Gui.frmSetup.ddlDept.Create(DropDownList)
+Gui.frmSetup.ddlDept.Size(2190,330)
+Gui.frmSetup.ddlDept.Position(3000,45)
+Gui.frmSetup.ddlDept.Event(Click,ddlDept_Click)
+Gui.frmSetup.ddlDept.Visible(False)
+Gui.frmSkills..Create
+Gui.frmSkills..Caption("Select Skill(s)")
+Gui.frmSkills..Size(7905,6960)
+Gui.frmSkills..MinX(0)
+Gui.frmSkills..MinY(0)
+Gui.frmSkills..Position(0,0)
+Gui.frmSkills..BackColor(-2147483633)
+Gui.frmSkills..MousePointer(0)
+Gui.frmSkills..Event(UnLoad,frmSkills_UnLoad)
+Gui.frmSkills.GsGCSkills.Create(GsGridControl)
+Gui.frmSkills.GsGCSkills.Size(7755,6210)
+Gui.frmSkills.GsGCSkills.Position(15,0)
+Gui.frmSkills.GsGCSkills.Anchor(15)
+Gui.frmSkills.cmdSelect.Create(Button)
+Gui.frmSkills.cmdSelect.Size(855,375)
+Gui.frmSkills.cmdSelect.Position(45,6240)
+Gui.frmSkills.cmdSelect.Caption("Select")
+Gui.frmSkills.cmdSelect.Event(Click,cmdSelect_Click)
+Gui.frmSkills.cmdSelect.Anchor(6)
+Gui.frmSkills.cmdCancel.Create(Button)
+Gui.frmSkills.cmdCancel.Size(855,375)
+Gui.frmSkills.cmdCancel.Position(945,6240)
+Gui.frmSkills.cmdCancel.Caption("Cancel")
+Gui.frmSkills.cmdCancel.Event(Click,frmSkills_UnLoad)
+Gui.frmSkills.cmdCancel.Anchor(6)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+	V.Global.sID.Declare
+	V.Global.sTableName.Declare
+	V.Global.sEmployees.Declare
+	V.Global.sDepartments.Declare
+	V.Global.sCourses.Declare
+	V.Global.sDocTypes.Declare
+	V.Global.sSkills.Declare
+	V.Global.sSkillVals.Declare
+	V.Global.sSkillFreq.Declare
+	V.Global.sGsGCIcon.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+'	Gui.frmSetup..ApplyTheme
+	
+	'Set Logo in GsGridControl Group Header
+	F.Intrinsic.String.Build("{0}\GAB_GSS_Logo_Green_Dash.png",V.Caller.ArtDir,V.Global.sGsGCIcon)
+	
+	F.ODBC.Connection!con.OpenCompanyConnection(300)
+
+	F.Intrinsic.Control.CallSub(LoadDropDownList)
+	F.Intrinsic.Control.CallSub(SetContextMenus)
+	F.Intrinsic.Control.CallSub(SetContextMenusSkills)
+	
+	Gui.frmSetup..Show
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.frmSetup_UnLoad.Start
+ 	F.Intrinsic.Control.Try
+ 	V.Local.sError.Declare
+ 
+ 	F.ODBC.Connection!con.Close
+ 	F.Intrinsic.Control.End
+ 
+ 	F.Intrinsic.Control.Catch
+ 		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+ 		F.Intrinsic.UI.Msgbox(V.Local.sError)
+ 		F.Intrinsic.Control.End 
+ 	F.Intrinsic.Control.EndTry
+Program.Sub.frmSetup_UnLoad.End
+
+Program.Sub.LoadDropDownList.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.iCnt.Declare
+
+	Gui.frmSetup.ddlSetup.AddItem("Departments",0)
+	Gui.frmSetup.ddlSetup.AddItem("Courses",1)
+	Gui.frmSetup.ddlSetup.AddItem("Skills",2)
+	Gui.frmSetup.ddlSetup.AddItem("Course Types",3)
+	Gui.frmSetup.ddlSetup.AddItem("Training Providers",4)
+	Gui.frmSetup.ddlSetup.AddItem("Training Levels",5)
+	Gui.frmSetup.ddlSetup.AddItem("Assign Employees to Departments",6)
+	Gui.frmSetup.ddlSetup.AddItem("Assign Skills to Departments",7)
+	Gui.frmSetup.ddlSetup.AddItem("Document Types",8)
+	Gui.frmSetup.ddlSetup.AddItem("Assign Documents to Courses",9)
+	
+	'Set Dropdown for Course Values and Frequencies
+	F.Intrinsic.Control.For(V.Local.iCnt,1,100,1)
+		F.Intrinsic.String.Build("{0}*!*{1}",V.Global.sSkillVals,V.Local.iCnt,V.Global.sSkillVals)
+	F.Intrinsic.Control.Next(V.Local.iCnt)
+	V.Global.sSkillFreq.Set("Day(s)*!*Week(s)*!*Month(s)*!*Year(s)")
+		
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.LoadDropDownList.End
+
+Program.Sub.SetContextMenus.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	Gui.frmSetup..ContextMenuCreate("ctxSetup")
+'	Gui.frmSetup.GsGCSetup.ContextMenuAttach("ctxSetup")
+	Gui.frmSetup..ContextMenuAddItem("ctxSetup","Add",0,V.Translation.7601)
+	Gui.frmSetup..ContextMenuAddItem("ctxSetup","Remove",0,V.Translation.517600)
+	Gui.frmSetup..ContextMenuAddItem("ctxSetup","Refresh",0,V.Translation.513800)
+	Gui.frmSetup..ContextMenuAddItem("ctxSetup","Export",0,V.Translation.233700)
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetup","Add","MenuClick")
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetup","Remove","MenuClick")
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetup","Refresh","MenuClick")
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetup","Export","MenuClick")
+	
+	Gui.frmSetup..ContextMenuCreate("ctxSetupDepts")
+'	Gui.frmSetup.GsGCSetup.ContextMenuAttach("ctxSetupDepts")
+	Gui.frmSetup..ContextMenuAddItem("ctxSetupDepts","Add",0,V.Translation.7601)
+	Gui.frmSetup..ContextMenuAddItem("ctxSetupDepts","AddMulti",0,"Add Multi")
+	Gui.frmSetup..ContextMenuAddItem("ctxSetupDepts","Remove",0,V.Translation.517600)
+	Gui.frmSetup..ContextMenuAddItem("ctxSetupDepts","RemoveMulti",0,"Remove Multi")
+	Gui.frmSetup..ContextMenuAddItem("ctxSetupDepts","Refresh",0,V.Translation.513800)
+	Gui.frmSetup..ContextMenuAddItem("ctxSetupDepts","Export",0,V.Translation.233700)
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetupDepts","Add","MenuClick")
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetupDepts","Remove","MenuClick")
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetupDepts","Refresh","MenuClick")
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetupDepts","Export","MenuClick")
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetupDepts","AddMulti","MenuClickMulti")
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetupDepts","RemoveMulti","MenuClickMulti")
+	
+	Gui.frmSetup..ContextMenuCreate("ctxSetupDocs")
+'	Gui.frmSetup.GsGCSetup.ContextMenuAttach("ctxSetupDocs")
+	Gui.frmSetup..ContextMenuAddItem("ctxSetupDocs","Add",0,"Add")
+	Gui.frmSetup..ContextMenuAddItem("ctxSetupDocs","Edit",0,"Update")
+'	Gui.frmSetup..ContextMenuAddItem("ctxSetupDocs","Active",0,"Set Rev Active")
+'	Gui.frmSetup..ContextMenuAddItem("ctxSetupDocs","Save",0,"Save")
+	Gui.frmSetup..ContextMenuAddItem("ctxSetupDocs","Remove",0,"Remove")
+	Gui.frmSetup..ContextMenuAddItem("ctxSetupDocs","Refresh",0,V.Translation.513800)
+	Gui.frmSetup..ContextMenuAddItem("ctxSetupDocs","Export",0,V.Translation.233700)
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetupDocs","Add","MenuClickDocPath")
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetupDocs","Edit","MenuClickDocPath")
+'	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetupDocs","Active","MenuClickDocPath")
+'	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetupDocs","Save","MenuClickDocPath")
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetupDocs","Remove","MenuClickDocPath")
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetupDocs","Refresh","MenuClick")
+	Gui.frmSetup..ContextMenuSetItemEventHandler("ctxSetupDocs","Export","MenuClick")
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.SetContextMenus.End
+
+Program.Sub.MenuClick.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.iID.Declare
+	V.Local.sExp.Declare
+	V.Local.iRow.Declare
+	
+	F.Intrinsic.Control.If(V.DataTable.dtSetup.Exists,=,False)
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.Control.SelectCase(V.Args.ItemName)
+		F.Intrinsic.Control.Case("ADD")
+			F.Intrinsic.Control.SelectCase(V.Screen.frmSetup!ddlSetup.ItemData)
+				F.Intrinsic.Control.CaseAny(0,1,2,3,4,5,6,8,9)
+					F.Intrinsic.String.Build("Max({0})",V.Global.sID,V.Local.sExp)
+					F.Data.DataTable.Compute("dtSetup",V.Local.sExp,"",V.Local.iID)
+					F.Data.DataTable.AddRow("dtSetup",V.Global.sID,V.Local.iID.++)
+				F.Intrinsic.Control.Case(7)
+					F.Intrinsic.String.Build("Max({0})",V.Global.sID,V.Local.sExp)
+					F.Data.DataTable.Compute("dtSetup",V.Local.sExp,"",V.Local.iID)
+					F.Intrinsic.Control.If(V.Screen.frmSetup!ddlDept.ItemData,=,0)
+						'Do Nothing
+					F.Intrinsic.Control.Else
+						F.Data.DataTable.AddRow("dtSetup",V.Global.sID,0,"CORE",False,"DEPT_ID",V.Screen.frmSetup!ddlDept.ItemData,"DEPARTMENT",V.Screen.frmSetup!ddlDept.Value)
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndSelect
+			
+		F.Intrinsic.Control.Case("REMOVE")
+			F.Intrinsic.Control.If(V.Screen.frmSetup!ddlSetup.ItemData,=,7)
+			F.Intrinsic.Control.AndIf(V.Screen.frmSetup!ddlDept.ItemData,=,0)
+				F.Intrinsic.Control.ExitSub
+			F.Intrinsic.Control.EndIf
+			
+			Gui.frmSetup.GsGCSetup.GetSelectedRows("gvSetup",V.Local.iRow)
+			F.Data.DataTable.DeleteRow("dtSetup",V.Local.iRow)
+			F.Data.DataTable.SaveToDB("dtSetup","con",V.Global.sTableName,V.Global.sID,4)
+			F.Data.DataTable.AcceptChanges("dtSetup")
+			
+		F.Intrinsic.Control.Case("REFRESH")
+			F.Intrinsic.Control.If(V.Screen.frmSetup!ddlSetup.ItemData,=,7)
+				F.Intrinsic.Control.CallSub(ddlSetup_Click,"Dept",V.Screen.frmSetup!ddlDept.Value)
+			F.Intrinsic.Control.Else
+				F.Intrinsic.Control.CallSub(ddlSetup_Click)
+			F.Intrinsic.Control.EndIf
+			
+		F.Intrinsic.Control.Case("EXPORT")
+			F.Intrinsic.Control.CallSub(Export)
+			
+	F.Intrinsic.Control.EndSelect
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.MenuClick.End
+
+Program.Sub.MenuClickMulti.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.iCnt.Declare
+	V.Local.sSkillIDs.Declare
+	V.Local.sSQL.Declare
+	
+	F.Intrinsic.Control.If(V.DataTable.dtSetup.Exists,=,False)
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.Screen.frmSetup!ddlDept.ItemData,=,0)
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.Control.SelectCase(V.Args.ItemName)
+		F.Intrinsic.Control.Case("ADDMULTI")
+			'Set Screen Caption
+			Gui.frmSkills..Caption("Select Skill(s) to Add")
+			'Get Current Skill IDs
+			F.Intrinsic.Control.If(V.DataTable.dtSetup.RowCount,<>,0)
+				F.Intrinsic.Control.For(V.Local.iCnt,0,V.DataTable.dtSetup.RowCount--,1)
+					F.Intrinsic.Control.If(V.Local.iCnt,=,0)
+						V.Local.sSkillIDs.Set(V.DataTable.dtSetup(V.Local.iCnt).SKILL_ID!FieldVal)
+					F.Intrinsic.Control.Else
+						F.Intrinsic.String.Build("{0},{1}",V.Local.sSkillIDs,V.DataTable.dtSetup(V.Local.iCnt).SKILL_ID!FieldVal,V.Local.sSkillIDs)
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.Next(V.Local.iCnt)
+				F.Intrinsic.String.Build("Select Cast(0 As Bit) As SEL,Cast(0 As Bit) As CORE,SKILL_ID,SKILL From GAB_5193_SKILLS Where SKILL_ID Not In ({0}) Order By SKILL;",V.Local.sSkillIDs,V.Local.sSQL)
+			F.Intrinsic.Control.Else
+				F.Intrinsic.String.Build("Select Cast(0 As Bit) As SEL,Cast(0 As Bit) As CORE,SKILL_ID,SKILL From GAB_5193_SKILLS Order By SKILL;",V.Local.sSkillIDs,V.Local.sSQL)
+			F.Intrinsic.Control.EndIf
+			
+		F.Intrinsic.Control.Case("REMOVEMULTI")
+			'Set Screen Caption
+			Gui.frmSkills..Caption("Select Skill(s) to Remove")
+			'Get Current Skill IDs
+			F.Intrinsic.Control.If(V.DataTable.dtSetup.RowCount,<>,0)
+				F.Intrinsic.Control.For(V.Local.iCnt,0,V.DataTable.dtSetup.RowCount--,1)
+					F.Intrinsic.Control.If(V.Local.iCnt,=,0)
+						V.Local.sSkillIDs.Set(V.DataTable.dtSetup(V.Local.iCnt).SKILL_ID!FieldVal)
+					F.Intrinsic.Control.Else
+						F.Intrinsic.String.Build("{0},{1}",V.Local.sSkillIDs,V.DataTable.dtSetup(V.Local.iCnt).SKILL_ID!FieldVal,V.Local.sSkillIDs)
+					F.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.Next(V.Local.iCnt)
+				F.Intrinsic.String.Build("Select Cast(0 As Bit) As SEL,SKILL_ID,SKILL From GAB_5193_SKILLS Where SKILL_ID In ({0}) Order By SKILL;",V.Local.sSkillIDs,V.Local.sSQL)
+			F.Intrinsic.Control.Else
+				F.Intrinsic.UI.Msgbox("No Skills to remove.","Skills")
+				F.Intrinsic.Control.ExitSub
+			F.Intrinsic.Control.EndIf
+			
+	F.Intrinsic.Control.EndSelect
+	
+	'Check if DT exists
+	F.Intrinsic.Control.If(V.DataTable.dtSkills.Exists)
+		F.Data.DataTable.Close("dtSkills")
+	F.Intrinsic.Control.EndIf
+	
+	'Load Data
+	F.Data.DataTable.CreateFromSQL("dtSkills","con",V.Local.sSQL,True)
+	
+	'Build Grid
+	Gui.frmSkills.GsGCSkills.AddGridViewFromDataTable("gvSkills","dtSkills")
+	Gui.frmSkills.GsGCSkills.Icon(V.Global.sGsGCIcon)
+	Gui.frmSkills.GsGCSkills.SuspendLayout()
+	Gui.frmSkills.GsGCSkills.SetGridViewProperty("gvSkills","MultiSelect",True)
+	Gui.frmSkills.GsGCSkills.SetGridViewProperty("gvSkills","Editable",True)
+	Gui.frmSkills.GsGCSkills.SetGridViewProperty("gvSkills","AllowSort",True)
+	Gui.frmSkills.GsGCSkills.SetGridViewProperty("gvSkills","AllowFilter",True)
+	Gui.frmSkills.GsGCSkills.SetGridViewProperty("gvSkills","OptionsDetailShowDetailTabs",False)
+	Gui.frmSkills.GsGCSkills.SetGridViewProperty("gvSkills","OptionsViewShowGroupPanel",True)
+	Gui.frmSkills.GsGCSkills.SetGridViewProperty("gvSkills","EnableAppearanceOddRow",True)
+	
+	'SEL
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SEL","Visible",True)
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SEL","Caption","Select")
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SEL","MinWidth","55")
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SEL","MaxWidth","55")
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SEL","AllowEdit",True)
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SEL","ReadOnly",False)
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SEL","HeaderFontBold",True)
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SEL","HeaderHAlignment","Center")
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SEL","CellHAlignment","Center")
+	
+	'CORE
+	F.Intrinsic.Control.If(V.Args.ItemName,<>,"REMOVEMULTI")
+		Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","CORE","Visible",True)
+		Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","CORE","Caption","Core Skill")
+		Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","CORE","MinWidth","65")
+		Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","CORE","MaxWidth","65")
+		Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","CORE","AllowEdit",True)
+		Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","CORE","ReadOnly",False)
+		Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","CORE","HeaderFontBold",True)
+		Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","CORE","HeaderHAlignment","Center")
+		Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","CORE","CellHAlignment","Center")
+	F.Intrinsic.Control.EndIf
+	
+	'SKILL_ID
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL_ID","Visible",False)
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL_ID","Caption","Skill ID")
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL_ID","MinWidth","55")
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL_ID","MaxWidth","55")
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL_ID","AllowEdit",False)
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL_ID","ReadOnly",True)
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL_ID","HeaderFontBold",True)
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL_ID","HeaderHAlignment","Center")
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL_ID","CellHAlignment","Center")
+	
+	'SKILL
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL","Visible",True)
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL","Caption","Skill")
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL","MinWidth","100")
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL","AllowEdit",False)
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL","ReadOnly",True)
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL","HeaderFontBold",True)
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL","HeaderHAlignment","Left")
+	Gui.frmSkills.GsGCSkills.SetColumnProperty("gvSkills","SKILL","CellHAlignment","Left")
+	
+	Gui.frmSkills.GsGCSkills.ResumeLayout()
+	Gui.frmSkills.GsGCSkills.MainView("gvSkills")
+	
+	Gui.frmSkills..Show
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.MenuClickMulti.End
+
+Program.Sub.MenuClickDocPath.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.iRow.Declare
+	V.Local.sDocPath.Declare
+	V.Local.bExists.Declare
+	V.Local.sMsg.Declare
+	V.Local.sSQL.Declare
+	V.Local.sExp.Declare
+	V.Local.iID.Declare
+	V.Local.sExtension.Declare
+	V.Local.sDocName.Declare
+	V.Local.sDocNameMatch.Declare
+	V.Local.iRet.Declare
+	V.Local.iRev.Declare
+	V.Local.iCnt.Declare
+	V.Local.sSelect.Declare
+	
+	F.Intrinsic.Control.If(V.DataTable.dtSetup.Exists,=,False)
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+	
+	Gui.frmSetup.GsGCSetup.GetSelectedRows("gvSetup",V.Local.iRow)
+
+	F.Intrinsic.Control.SelectCase(V.Args.ItemName)
+		F.Intrinsic.Control.Case("ADD")
+			V.Local.sDocPath.Set("")
+			V.Local.sDocName.Set("")
+			F.Intrinsic.UI.ShowOpenFileDialog("","*",V.Local.sDocPath)
+			F.Intrinsic.Control.If(V.Local.sDocPath.IsNotCancel)
+				'Get File Name
+				F.Intrinsic.String.Split(V.Local.sDocPath,"\",V.Local.sDocName)
+				V.Local.sDocName.Set(V.Local.sDocName(V.Local.sDocName.UBound))
+				F.Intrinsic.String.Replace(V.Local.sDocPath,V.Local.sDocName,"",V.Local.sDocPath)
+			F.Intrinsic.Control.EndIf
+			F.Intrinsic.String.Build("Max({0})",V.Global.sID,V.Local.sExp)
+			F.Data.DataTable.Compute("dtSetup",V.Local.sExp,"",V.Local.iID)
+			F.Data.DataTable.AddRow("dtSetup",V.Global.sID,V.Local.iID.++,"COURSE_ID",-1,"DOC_TYPE_ID",-1,"DOC_PATH",V.Local.sDocPath,"DOC_TITLE",V.Local.sDocName,"DOC_REV",1,"ACTIVE",True)
+			F.Intrinsic.Control.CallSub(cmdSave_Click)
+			
+		F.Intrinsic.Control.Case("EDIT")
+			'Open File Windows browser to select a file path
+			V.Local.sDocPath.Set("")
+			V.Local.sDocName.Set("")
+			F.Intrinsic.UI.ShowOpenFileDialog("","*",V.Local.sDocPath)
+			F.Intrinsic.Control.If(V.Local.sDocPath.IsNotCancel)
+				'Get File Name
+				F.Intrinsic.String.Split(V.Local.sDocPath,"\",V.Local.sDocName)
+				V.Local.sDocName.Set(V.Local.sDocName(V.Local.sDocName.UBound))
+				F.Intrinsic.String.Replace(V.Local.sDocPath,V.Local.sDocName,"",V.Local.sDocPath)
+			F.Intrinsic.Control.EndIf
+			F.Data.DataTable.SetValue("dtSetup",V.Local.iRow,"DOC_PATH",V.Local.sDocPath,"DOC_TITLE",V.Local.sDocName)
+			F.Intrinsic.Control.CallSub(cmdSave_Click)
+						
+		F.Intrinsic.Control.Case("REMOVE")
+			Gui.frmSetup.GsGCSetup.GetSelectedRows("gvSetup",V.Local.iRow)
+			F.Data.DataTable.DeleteRow("dtSetup",V.Local.iRow)
+			F.Data.DataTable.SaveToDB("dtSetup","con",V.Global.sTableName,V.Global.sID,4)
+			F.Data.DataTable.AcceptChanges("dtSetup")
+			
+	F.Intrinsic.Control.EndSelect
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.MenuClickDocPath.End
+
+Program.Sub.Export.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sFileExport.Declare
+	V.Local.bExcel.Declare
+	V.Local.bFileLocked.Declare
+	V.Local.sMsg.Declare
+	V.Local.sExt.Declare
+
+	F.Automation.MSExcel.CheckPresence(V.Local.bExcel)
+	F.Intrinsic.Control.If(V.Local.bExcel)
+		V.Local.sExt.Set("xlsx")
+	F.Intrinsic.Control.Else
+		V.Local.sExt.Set("csv")
+	F.Intrinsic.Control.EndIf
+			
+	F.Intrinsic.String.Build("{0}GAB_5193_{1}_Export.{2}",V.Caller.LocalGssTempDir,V.Global.sTableName,V.Local.sExt,V.Local.sFileExport)
+	F.Intrinsic.File.IsFileLocked(V.Local.sFileExport,V.Local.bFileLocked)
+	F.Intrinsic.Control.If(V.Local.bFileLocked)
+		F.Intrinsic.String.Build("File is already open. Please close and export again.{0}File: {1}",V.Ambient.NewLine,V.Local.sFileExport,V.Local.sMsg)
+		F.Intrinsic.UI.Msgbox(V.Local.sMsg,"File In Use")
+	F.Intrinsic.Control.Else
+		Gui.frmSetup.GsGCSetup.Export(V.Local.sFileExport,V.Local.sExt)
+		F.Intrinsic.Task.ShellExec(0,"",V.Local.sFileExport,"","",1)
+	F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.Export.End
+
+Program.Sub.GetEmployees.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	F.ODBC.Connection!con.ExecuteAndReturn("Select NAME From V_EMPLOYEE_MSTR Where DATE_TERMINATION = '1900-01-01' Order By NAME;",V.Global.sEmployees)
+	F.Intrinsic.String.Replace(V.Global.sEmployees,"#$#","*!*",V.Global.sEmployees)
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.GetEmployees.End
+
+Program.Sub.GetDepartments.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	F.ODBC.Connection!con.ExecuteAndReturn("Select DEPARTMENT From GAB_5193_DEPTS Order By DEPARTMENT;",V.Global.sDepartments)
+	F.Intrinsic.String.Replace(V.Global.sDepartments,"#$#","*!*",V.Global.sDepartments)
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.GetDepartments.End
+
+Program.Sub.GetSkills.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	F.ODBC.Connection!con.ExecuteAndReturn("Select SKILL From GAB_5193_SKILLS Order By SKILL;",V.Global.sSkills)
+	F.Intrinsic.String.Replace(V.Global.sSkills,"#$#","*!*",V.Global.sSkills)
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.GetSkills.End
+
+Program.Sub.GetCourses.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	F.ODBC.Connection!con.ExecuteAndReturn("Select COURSE_NAME From GAB_5193_COURSES Order By COURSE_NAME;",V.Global.sCourses)
+	F.Intrinsic.String.Replace(V.Global.sCourses,"#$#","*!*",V.Global.sCourses)
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.GetCourses.End
+
+Program.Sub.GetDocTypes.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	F.ODBC.Connection!con.ExecuteAndReturn("Select TYPES From GAB_5193_DOC_TYPE Order By TYPES;",V.Global.sDocTypes)
+	F.Intrinsic.String.Replace(V.Global.sDocTypes,"#$#","*!*",V.Global.sDocTypes)
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.GetDocTypes.End
+
+Program.Sub.ddlSetup_Click.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sSQL.Declare
+
+	Gui.frmSetup.ddlDept.Visible(False)
+	F.Intrinsic.Control.SelectCase(V.Screen.frmSetup!ddlSetup.ItemData)
+		F.Intrinsic.Control.Case(0)
+			V.Global.sID.Set("DEPT_ID")
+			V.Global.sTableName.Set("GAB_5193_DEPTS")
+			V.Local.sSQL.Set("Select * From GAB_5193_DEPTS Order By DEPARTMENT;")
+			
+		F.Intrinsic.Control.Case(1)
+			V.Global.sID.Set("COURSE_ID")
+			V.Global.sTableName.Set("GAB_5193_COURSES")
+			V.Local.sSQL.Set("Select * From GAB_5193_COURSES Order By COURSE_NAME;")
+			
+		F.Intrinsic.Control.Case(2)
+			V.Global.sID.Set("SKILL_ID")
+			V.Global.sTableName.Set("GAB_5193_SKILLS")
+			V.Local.sSQL.Set("Select * From GAB_5193_SKILLS Order By SKILL;")
+			
+		F.Intrinsic.Control.Case(3)
+			V.Global.sID.Set("TYPE_ID")
+			V.Global.sTableName.Set("GAB_5193_COURSE_TYPE")
+			V.Local.sSQL.Set("Select * From GAB_5193_COURSE_TYPE Order By COURSE_TYPE;")
+			
+		F.Intrinsic.Control.Case(4)
+			V.Global.sID.Set("PROVIDER_ID")
+			V.Global.sTableName.Set("GAB_5193_PROVIDERS")
+			V.Local.sSQL.Set("Select * From GAB_5193_PROVIDERS Order By PROVIDER_NAME;")
+			
+		F.Intrinsic.Control.Case(5)
+			V.Global.sID.Set("LEVEL_ID")
+			V.Global.sTableName.Set("GAB_5193_LEVELS")
+			V.Local.sSQL.Set("Select * From GAB_5193_LEVELS Order By LEVEL_DESC;")
+			
+		F.Intrinsic.Control.Case(6)
+			V.Global.sID.Set("EDID")
+			V.Global.sTableName.Set("GAB_5193_EMPL_DEPT")
+			V.Local.sSQL.Set("Select * From GAB_5193_EMPL_DEPT;")
+			
+		F.Intrinsic.Control.Case(7)
+			V.Global.sID.Set("SDID")
+			V.Global.sTableName.Set("GAB_5193_SKILL_DEPT")
+			V.Local.sSQL.Set("Select * From GAB_5193_SKILL_DEPT Where DEPT_ID = 0;")
+			Gui.frmSetup.ddlDept.Visible(True)
+			'Set Dept DropDownList
+			F.Data.Dictionary.CreateFromSQL("dDepts","con","Select 0 As DEPT_ID,'All (View Only)' As DEPARTMENT Union Select * From GAB_5193_DEPTS Order by DEPARTMENT;",4,True)
+			Gui.frmSetup.ddlDept.ClearItems
+			Gui.frmSetup.ddlDept.AddItems("Dictionary","dDepts")
+			F.Data.Dictionary.Close("dDepts")
+			
+		F.Intrinsic.Control.Case(8)
+			V.Global.sID.Set("DOC_TYPE_ID")
+			V.Global.sTableName.Set("GAB_5193_DOC_TYPE")
+			V.Local.sSQL.Set("Select * From GAB_5193_DOC_TYPE;")
+			
+		F.Intrinsic.Control.Case(9)
+			V.Global.sID.Set("COURSE_DOC_ID")
+			V.Global.sTableName.Set("GAB_5193_COURSE_DOCS")
+			V.Local.sSQL.Set("Select * From GAB_5193_COURSE_DOCS;")
+	F.Intrinsic.Control.EndSelect
+	
+	F.Intrinsic.Control.If(V.DataTable.dtSetup.Exists)
+		F.Data.DataTable.Close("dtSetup")
+	F.Intrinsic.Control.EndIf
+	
+	F.Data.DataTable.CreateFromSQL("dtSetup","con",V.Local.sSQL,True)
+	
+	F.Intrinsic.Control.SelectCase(V.Screen.frmSetup!ddlSetup.ItemData)
+		F.Intrinsic.Control.Case(6)
+			'Add Columns
+			F.Data.DataTable.AddColumn("dtSetup","EMPLOYEE",String,"")
+			F.Data.DataTable.AddColumn("dtSetup","DEPARTMENT",String,"")
+			'Create Dictionaries
+			F.Data.Dictionary.CreateFromSQL("dEmpl","con","Select EMPLOYEE,RTRIM(NAME) From V_EMPLOYEE_MSTR Where DATE_TERMINATION = '1900-01-01';")
+			F.Data.Dictionary.CreateFromSQL("dDept","con","Select * From GAB_5193_DEPTS;")
+			'Fill from Dictionaries
+			F.Data.DataTable.FillFromDictionary("dtSetup","dEmpl","EMPNO","EMPLOYEE")
+			F.Data.DataTable.FillFromDictionary("dtSetup","dDept","DEPT_ID","DEPARTMENT")
+			'Close Dictionaires
+			F.Data.Dictionary.Close("dEmpl")
+			F.Data.Dictionary.Close("dDept")
+			'Get Employees
+			F.Intrinsic.Control.CallSub(GetEmployees)
+			'Get Departments
+			F.Intrinsic.Control.CallSub(GetDepartments)
+			
+		F.Intrinsic.Control.Case(7)
+			'Add Columns
+			F.Data.DataTable.AddColumn("dtSetup","SKILL",String,"")
+			F.Data.DataTable.AddColumn("dtSetup","DEPARTMENT",String,"")
+			
+			F.Intrinsic.Control.If(V.Args.Dept.Exists)
+				Gui.frmSetup.ddlDept.Text(V.Args.Dept)
+			F.Intrinsic.Control.EndIf
+			
+		F.Intrinsic.Control.Case(9)
+			'Add Columns
+			F.Data.DataTable.AddColumn("dtSetup","COURSE_NAME",String,"")
+			F.Data.DataTable.AddColumn("dtSetup","TYPES",String,"")
+			'Create Dictionaries
+			F.Data.Dictionary.CreateFromSQL("dCourse","con","Select COURSE_ID,COURSE_NAME From GAB_5193_COURSES Order By COURSE_NAME;")
+			F.Data.Dictionary.CreateFromSQL("dDocTypes","con","Select DOC_TYPE_ID,TYPES From GAB_5193_DOC_TYPE;")
+			'Fill from Dictionaries
+			F.Data.DataTable.FillFromDictionary("dtSetup","dCourse","COURSE_ID","COURSE_NAME")
+			F.Data.DataTable.FillFromDictionary("dtSetup","dDocTypes","DOC_TYPE_ID","TYPES")
+			'Close Dictionaires
+			F.Data.Dictionary.Close("dCourse")
+			F.Data.Dictionary.Close("dDocTypes")
+			'Get Courses
+			F.Intrinsic.Control.CallSub(GetCourses)
+			'Get Doc Types
+			F.Intrinsic.Control.CallSub(GetDocTypes)
+			
+	F.Intrinsic.Control.EndSelect
+	
+	F.Intrinsic.Control.CallSub(LoadGVs)
+	
+	F.Intrinsic.Control.SelectCase(V.Screen.frmSetup!ddlSetup.ItemData)
+		F.Intrinsic.Control.CaseAny(0,1,2,3,4,5,6,8)
+			Gui.frmSetup.GsGCSetup.ContextMenuAttach("ctxSetup")
+		F.Intrinsic.Control.Case(7)
+			Gui.frmSetup.GsGCSetup.ContextMenuAttach("ctxSetupDepts")
+		F.Intrinsic.Control.Case(9)
+			Gui.frmSetup.GsGCSetup.ContextMenuAttach("ctxSetupDocs")
+	F.Intrinsic.Control.EndSelect
+	
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.ddlSetup_Click.End
+
+Program.Sub.ddlDept_Click.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sSQL.Declare
+
+	F.Intrinsic.Control.If(V.DataTable.dtSetup.Exists)
+		F.Data.DataTable.Close("dtSetup")
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.Screen.frmSetup!ddlDept.ItemData,=,0)
+		V.Local.sSQL.Set("Select * From GAB_5193_SKILL_DEPT;")
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("Select * From GAB_5193_SKILL_DEPT Where DEPT_ID = {0};",V.Screen.frmSetup!ddlDept.ItemData,V.Local.sSQL)
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.CreateFromSQL("dtSetup","con",V.Local.sSQL,True)
+	
+	'Add Columns
+	F.Data.DataTable.AddColumn("dtSetup","SKILL",String,"")
+	F.Data.DataTable.AddColumn("dtSetup","DEPARTMENT",String,"")
+	'Create Dictionaries
+	F.Data.Dictionary.CreateFromSQL("dSkill","con","Select SKILL_ID,RTRIM(SKILL) From GAB_5193_SKILLS;")
+	F.Data.Dictionary.CreateFromSQL("dDept","con","Select DEPT_ID,RTRIM(DEPARTMENT) From GAB_5193_DEPTS;")
+	'Fill from Dictionaries
+	F.Data.DataTable.FillFromDictionary("dtSetup","dSkill","SKILL_ID","SKILL")
+	F.Data.DataTable.FillFromDictionary("dtSetup","dDept","DEPT_ID","DEPARTMENT")
+	'Close Dictionaires
+	F.Data.Dictionary.Close("dSkill")
+	F.Data.Dictionary.Close("dDept")
+	'Get Employees
+	F.Intrinsic.Control.CallSub(GetSkills)
+	'Get Departments
+	F.Intrinsic.Control.CallSub(GetDepartments)
+	
+	F.Intrinsic.Control.CallSub(LoadGVs)
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.ddlDept_Click.End
+
+Program.Sub.LoadGVs.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sColumns.Declare
+	V.Local.iCnt.Declare
+	
+	Gui.frmSetup.GsGCSetup.AddGridViewFromDataTable("gvSetup","dtSetup")
+	Gui.frmSetup.GsGCSetup.Icon(V.Global.sGsGCIcon)
+	Gui.frmSetup.GsGCSetup.SuspendLayout()
+	Gui.frmSetup.GsGCSetup.SetGridViewProperty("gvSetup","MultiSelect",True)
+	Gui.frmSetup.GsGCSetup.SetGridViewProperty("gvSetup","Editable",True)
+	Gui.frmSetup.GsGCSetup.SetGridViewProperty("gvSetup","AllowSort",True)
+	Gui.frmSetup.GsGCSetup.SetGridViewProperty("gvSetup","AllowFilter",True)
+	Gui.frmSetup.GsGCSetup.SetGridViewProperty("gvSetup","OptionsDetailShowDetailTabs",False)
+	Gui.frmSetup.GsGCSetup.SetGridViewProperty("gvSetup","OptionsViewShowGroupPanel",True)
+	Gui.frmSetup.GsGCSetup.SetGridViewProperty("gvSetup","EnableAppearanceOddRow",True)
+	
+	F.Intrinsic.Control.SelectCase(V.Screen.frmSetup!ddlSetup.ItemData)
+		F.Intrinsic.Control.Case(0)
+			'DEPT_ID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","Caption","Dept ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","ReadOnly",True)
+			'DEPARTMENT
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","Caption","Department")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","MinWidth","105")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","ReadOnly",False)
+			
+		F.Intrinsic.Control.Case(1)
+			'COURSE_ID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_ID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_ID","Caption","Course ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_ID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_ID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_ID","ReadOnly",True)
+			'COURSE_NAME
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_NAME","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_NAME","Caption","Course Name")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_NAME","MinWidth","105")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_NAME","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_NAME","ReadOnly",False)
+			
+		F.Intrinsic.Control.Case(2)
+			'SKILL_ID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL_ID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL_ID","Caption","Skill ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL_ID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL_ID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL_ID","ReadOnly",True)
+			'SKILL
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL","Caption","Skill")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL","MinWidth","105")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL","ReadOnly",False)
+			'RENEWAL_VALUE
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","RENEWAL_VALUE","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","RENEWAL_VALUE","Caption","Renewal Duration")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","RENEWAL_VALUE","MinWidth","105")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","RENEWAL_VALUE","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","RENEWAL_VALUE","ReadOnly",False)
+			Gui.frmSetup.GsGCSetup.ColumnEdit("gvSetup","RENEWAL_VALUE","DROPDOWNLIST",V.Global.sSkillVals)
+			'RENEWAL_FREQ
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","RENEWAL_FREQ","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","RENEWAL_FREQ","Caption","Renewal Frequency")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","RENEWAL_FREQ","MinWidth","105")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","RENEWAL_FREQ","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","RENEWAL_FREQ","ReadOnly",False)
+			Gui.frmSetup.GsGCSetup.ColumnEdit("gvSetup","RENEWAL_FREQ","DROPDOWNLIST",V.Global.sSkillFreq)
+			
+		F.Intrinsic.Control.Case(3)
+			'TYPE_ID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPE_ID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPE_ID","Caption","Type ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPE_ID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPE_ID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPE_ID","ReadOnly",True)
+			'COURSE_TYPE
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_TYPE","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_TYPE","Caption","Course Type")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_TYPE","MinWidth","105")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_TYPE","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_TYPE","ReadOnly",False)
+			
+		F.Intrinsic.Control.Case(4)
+			'PROVIDER_ID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_ID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_ID","Caption","Provider ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_ID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_ID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_ID","ReadOnly",True)
+			'PROVIDER_NAME
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_NAME","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_NAME","Caption","Provider Name")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_NAME","MinWidth","105")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_NAME","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_NAME","ReadOnly",False)
+			'PROVIDER_ADDRESS
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_ADDRESS","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_ADDRESS","Caption","Address")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_ADDRESS","MinWidth","105")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_ADDRESS","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_ADDRESS","ReadOnly",False)
+			'PROVIDER_EMAIL
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_EMAIL","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_EMAIL","Caption","Email")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_EMAIL","MinWidth","95")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_EMAIL","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_EMAIL","ReadOnly",False)
+			'PROVIDER_PHONE
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_PHONE","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_PHONE","Caption","Phone")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_PHONE","MinWidth","85")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_PHONE","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","PROVIDER_PHONE","ReadOnly",False)
+			
+		F.Intrinsic.Control.Case(5)
+			'LEVEL_ID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_ID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_ID","Caption","Level ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_ID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_ID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_ID","ReadOnly",True)
+			'LEVEL_NAME
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_NAME","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_NAME","Caption","Level")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_NAME","MinWidth","105")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_NAME","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_NAME","ReadOnly",False)
+			'LEVEL_DESC
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_DESC","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_DESC","Caption","Description")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_DESC","MinWidth","105")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_DESC","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","LEVEL_DESC","ReadOnly",False)
+			
+		F.Intrinsic.Control.Case(6)
+			'EDID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EDID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EDID","Caption","ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EDID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EDID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EDID","ReadOnly",True)
+			'EMPNO
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EMPNO","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EMPNO","Caption","Empl No")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EMPNO","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EMPNO","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EMPNO","ReadOnly",True)
+			'DEPT_ID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","Caption","Dept ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","ReadOnly",True)
+			'EMPLOYEE
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EMPLOYEE","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EMPLOYEE","Caption","Employee")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EMPLOYEE","MinWidth","105")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EMPLOYEE","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","EMPLOYEE","ReadOnly",False)
+			Gui.frmSetup.GsGCSetup.ColumnEdit("gvSetup","EMPLOYEE","DROPDOWNLIST",V.Global.sEmployees)
+			'DEPARTMENT
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","Caption","Department")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","MinWidth","105")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","ReadOnly",False)
+			Gui.frmSetup.GsGCSetup.ColumnEdit("gvSetup","DEPARTMENT","DROPDOWNLIST",V.Global.sDepartments)
+			
+		F.Intrinsic.Control.Case(7)
+			F.Intrinsic.Control.If(V.Screen.frmSetup!ddlDept.Value,=,"ALL (VIEW ONLY)")
+				Gui.frmSetup.GsGCSetup.SetGridViewProperty("gvSetup","Editable",False)
+				Gui.frmSetup.GsGCSetup.SetGridViewProperty("gvSetup","ReadOnly",True)
+			F.Intrinsic.Control.EndIf
+			'SDID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SDID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SDID","Caption","ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SDID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SDID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SDID","ReadOnly",True)
+			'SKILL_ID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL_ID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL_ID","Caption","Skill ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL_ID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL_ID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL_ID","ReadOnly",True)
+			'DEPT_ID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","Caption","Dept ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPT_ID","ReadOnly",True)
+			'CORE
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","CORE","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","CORE","Caption","Core Skill")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","CORE","MinWidth","45")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","CORE","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","CORE","ReadOnly",False)
+			'SKILL
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL","Caption","Skill")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL","MinWidth","115")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","SKILL","ReadOnly",False)
+			Gui.frmSetup.GsGCSetup.ColumnEdit("gvSetup","SKILL","DROPDOWNLIST",V.Global.sSkills)
+			'DEPARTMENT
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","Caption","Department")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","MinWidth","115")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","ReadOnly",False)
+			Gui.frmSetup.GsGCSetup.ColumnEdit("gvSetup","DEPARTMENT","DROPDOWNLIST",V.Global.sDepartments)
+			
+			F.Intrinsic.Control.If(V.Screen.frmSetup!ddlDept.ItemData,<>,"")
+				F.Intrinsic.Control.If(V.Screen.frmSetup!ddlDept.ItemData,<>,0)
+					Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","Visible",False)
+				F.Intrinsic.Control.Else
+					Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DEPARTMENT","GroupIndex",0)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.EndIf
+			
+		F.Intrinsic.Control.Case(8)
+			'DOC_TYPE_ID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TYPE_ID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TYPE_ID","Caption","Doc Type ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TYPE_ID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TYPE_ID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TYPE_ID","ReadOnly",True)
+			'TYPES
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPES","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPES","Caption","Doc Type")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPES","MinWidth","105")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPES","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPES","ReadOnly",False)
+			
+		F.Intrinsic.Control.Case(9)
+			'COURSE_DOC_ID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_DOC_ID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_DOC_ID","Caption","Course Doc ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_DOC_ID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_DOC_ID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_DOC_ID","ReadOnly",True)
+			'COURSE_ID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_ID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_ID","Caption","Course ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_ID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_ID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_ID","ReadOnly",True)
+			'DOC_TYPE_ID
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TYPE_ID","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TYPE_ID","Caption","Doc Type ID")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TYPE_ID","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TYPE_ID","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TYPE_ID","ReadOnly",True)
+			'COURSE_NAME
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_NAME","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_NAME","VisibleIndex",0)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_NAME","Caption","Course Name")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_NAME","MinWidth","105")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_NAME","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","COURSE_NAME","ReadOnly",False)
+			Gui.frmSetup.GsGCSetup.ColumnEdit("gvSetup","COURSE_NAME","DROPDOWNLIST",V.Global.sCourses)
+			'TYPES
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPES","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPES","VisibleIndex",1)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPES","Caption","Doc Type")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPES","MinWidth","85")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPES","AllowEdit",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","TYPES","ReadOnly",False)
+			Gui.frmSetup.GsGCSetup.ColumnEdit("gvSetup","TYPES","DROPDOWNLIST",V.Global.sDocTypes)
+			'DOC_PATH
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_PATH","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_PATH","Caption","File Path")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_PATH","MinWidth","125")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_PATH","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_PATH","ReadOnly",True)
+			'DOC_TITLE
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TITLE","Visible",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TITLE","VisibleIndex",2)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TITLE","Caption","File Name")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TITLE","MinWidth","85")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TITLE","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TITLE","ReadOnly",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TITLE","CellForeColor","Blue")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_TITLE","CellFontUnderline",True)
+			'DOC_REV
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_REV","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_REV","Caption","Doc Rev")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_REV","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_REV","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_REV","ReadOnly",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_REV","HeaderHAlignment","Center")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","DOC_REV","CellHAlignment","Center")
+			'ACTIVE
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","ACTIVE","Visible",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","ACTIVE","Caption","Active")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","ACTIVE","MinWidth","55")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","ACTIVE","AllowEdit",False)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","ACTIVE","ReadOnly",True)
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","ACTIVE","HeaderHAlignment","Center")
+			Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup","ACTIVE","CellHAlignment","Center")
+			
+	F.Intrinsic.Control.EndSelect
+	
+	'Loop through columns names by using the V.DataTable.dtName.FieldNames
+	F.Intrinsic.String.Split(V.DataTable.dtSetup.FieldNames,"*!*",V.Local.sColumns)
+	F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sColumns.UBound,1)
+		Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup",V.Local.sColumns(V.Local.iCnt),"HeaderFontBold",True)
+		Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup",V.Local.sColumns(V.Local.iCnt),"HeaderHAlignment","Left")
+		Gui.frmSetup.GsGCSetup.SetColumnProperty("gvSetup",V.Local.sColumns(V.Local.iCnt),"CellHAlignment","Left")
+	F.Intrinsic.Control.Next(V.Local.iCnt)
+	
+	Gui.frmSetup.GsGCSetup.ResumeLayout()
+	Gui.frmSetup.GsGCSetup.MainView("gvSetup")
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.LoadGVs.End
+
+Program.Sub.GsGCSetup_RowCellClick.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sSQL.Declare
+	V.Local.sDocPath.Declare
+	V.Local.bLocked.Declare
+	V.Local.sMsg.Declare
+	
+	F.Intrinsic.Control.SelectCase(V.Args.Column)
+		F.Intrinsic.Control.Case("DOC_TITLE")
+			F.Intrinsic.Control.If(V.DataTable.dtSetup(V.Args.RowIndex).DOC_TITLE!FieldVal,<>,"")
+				F.Intrinsic.String.Build("{0}{1}",V.DataTable.dtSetup(V.Args.RowIndex).DOC_PATH!FieldVal,V.DataTable.dtSetup(V.Args.RowIndex).DOC_TITLE!FieldVal,V.Local.sDocPath)
+				F.Intrinsic.Task.ShellExec(0,"",V.Local.sDocPath,"","",1)
+			F.Intrinsic.Control.EndIf
+			
+	F.Intrinsic.Control.EndSelect
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.GsGCSetup_RowCellClick.End
+
+Program.Sub.cmdSave_Click.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	F.Intrinsic.Control.SelectCase(V.Screen.frmSetup!ddlSetup.ItemData)
+		F.Intrinsic.Control.CaseAny(0,1,2,3,4,5,8)
+			F.Data.DataTable.SaveToDB("dtSetup","con",V.Global.sTableName,V.Global.sID)
+			F.Data.DataTable.AcceptChanges("dtSetup")
+			
+		F.Intrinsic.Control.Case(6)
+			'Create Dictionaries
+			F.Data.Dictionary.CreateFromSQL("dEmpl","con","Select RTRIM(NAME),EMPLOYEE From V_EMPLOYEE_MSTR Where DATE_TERMINATION = '1900-01-01';",4,True)
+			F.Data.Dictionary.CreateFromSQL("dDept","con","Select '' As DEPARTMENT,-1 As DEPT_ID Union Select RTRIM(DEPARTMENT),DEPT_ID From GAB_5193_DEPTS;",4,True)
+			'Fill from Dictionaries
+			F.Data.DataTable.FillFromDictionary("dtSetup","dEmpl","EMPLOYEE","EMPNO")
+			F.Data.DataTable.FillFromDictionary("dtSetup","dDept","DEPARTMENT","DEPT_ID")
+			'Close Dictionaires
+			F.Data.Dictionary.Close("dEmpl")
+			F.Data.Dictionary.Close("dDept")
+			'Remove Columns
+			F.Data.DataTable.RemoveColumn("dtSetup","EMPLOYEE")
+			F.Data.DataTable.RemoveColumn("dtSetup","DEPARTMENT")
+			'Save Data
+			F.Data.DataTable.SaveToDB("dtSetup","con",V.Global.sTableName,V.Global.sID)
+			'Reload Grid
+			F.Intrinsic.Control.CallSub(ddlSetup_Click)
+			
+		F.Intrinsic.Control.Case(7)
+			'Create Dictionaries
+			F.Data.Dictionary.CreateFromSQL("dSkill","con","Select '' As SKILL,-1 As SKILL_ID Union Select RTRIM(SKILL),SKILL_ID From GAB_5193_SKILLS;",4,True)
+			F.Data.Dictionary.CreateFromSQL("dDept","con","Select '' As DEPARTMENT,-1 As DEPT_ID Union Select RTRIM(DEPARTMENT),DEPT_ID From GAB_5193_DEPTS;",4,True)
+			'Fill from Dictionaries
+			F.Data.DataTable.FillFromDictionary("dtSetup","dSkill","SKILL","SKILL_ID")
+			F.Data.DataTable.FillFromDictionary("dtSetup","dDept","DEPARTMENT","DEPT_ID")
+			'Close Dictionaires
+			F.Data.Dictionary.Close("dSkill")
+			F.Data.Dictionary.Close("dDept")
+			'Remove Columns
+			F.Data.DataTable.RemoveColumn("dtSetup","SKILL")
+			F.Data.DataTable.RemoveColumn("dtSetup","DEPARTMENT")
+			'Save Data
+			F.Data.DataTable.SaveToDB("dtSetup","con",V.Global.sTableName,V.Global.sID)
+			'Reload Grid
+			F.Intrinsic.Control.CallSub(ddlSetup_Click,"Dept",V.Screen.frmSetup!ddlDept.Value)
+			
+		F.Intrinsic.Control.Case(9)
+			'Create Dictionaries
+			F.Data.Dictionary.CreateFromSQL("dCourse","con","Select RTRIM(COURSE_NAME),COURSE_ID From GAB_5193_COURSES Order By COURSE_NAME;",4,True)
+			F.Data.Dictionary.CreateFromSQL("dDocTypes","con","Select RTRIM(TYPES),DOC_TYPE_ID From GAB_5193_DOC_TYPE;",4,True)
+			'Set Defaults
+			F.Data.Dictionary.SetDefaultReturn("dCourse",-1)
+			F.Data.Dictionary.SetDefaultReturn("dDocTypes",-1)
+			'Fill from Dictionaries
+			F.Data.DataTable.FillFromDictionary("dtSetup","dCourse","COURSE_NAME","COURSE_ID")
+			F.Data.DataTable.FillFromDictionary("dtSetup","dDocTypes","TYPES","DOC_TYPE_ID")
+			'Close Dictionaires
+			F.Data.Dictionary.Close("dCourse")
+			F.Data.Dictionary.Close("dDocTypes")
+			'Remove Columns
+			F.Data.DataTable.RemoveColumn("dtSetup","COURSE_NAME")
+			F.Data.DataTable.RemoveColumn("dtSetup","TYPES")
+			'Save Data
+			F.Data.DataTable.SaveToDB("dtSetup","con",V.Global.sTableName,V.Global.sID)
+			'Reload Grid
+			F.Intrinsic.Control.CallSub(ddlSetup_Click)
+			
+	F.Intrinsic.Control.EndSelect
+	
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.cmdSave_Click.End
+
+Program.Sub.frmSkills_UnLoad.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	Gui.frmSkills..Visible(False)
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.frmSkills_UnLoad.End
+
+Program.Sub.cmdSelect_Click.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.sSelect.Declare
+	V.Local.sSelect2.Declare
+	V.Local.iCnt.Declare
+	V.Local.iCnt2.Declare
+	V.Local.sExp.Declare
+	
+	F.Data.DataTable.Select("dtSkills","SEL = True",V.Local.sSelect)
+	F.Intrinsic.Control.If(V.Local.sSelect.IsNotNoReturn)
+		F.Intrinsic.String.Split(V.Local.sSelect,"*!*",V.Local.sSelect)
+		F.Intrinsic.Control.If(V.Screen.frmSkills.Caption,=,"Select Skill(s) to Add")
+			'Add Rows to dtSetup
+			F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sSelect.UBound,1)
+				F.Data.DataTable.AddRow("dtSetup",V.Global.sID,0,"CORE",V.DataTable.dtSkills(V.Local.sSelect(V.Local.iCnt)).CORE!FieldVal,"DEPT_ID",V.Screen.frmSetup!ddlDept.ItemData,"DEPARTMENT",V.Screen.frmSetup!ddlDept.Value,"SKILL_ID",V.DataTable.dtSkills(V.Local.sSelect(V.Local.iCnt)).SKILL_ID!FieldVal,"SKILL",V.DataTable.dtSkills(V.Local.sSelect(V.Local.iCnt)).SKILL!FieldVal)
+			F.Intrinsic.Control.Next(V.Local.iCnt)
+			'Save Changes
+			F.Intrinsic.Control.CallSub(cmdSave_Click)
+			
+		F.Intrinsic.Control.Else
+			'Remove Rows from dtSetup
+			F.Intrinsic.Control.For(V.Local.iCnt,0,V.Local.sSelect.UBound,1)
+				F.Intrinsic.String.Build("SKILL_ID = {0}",V.DataTable.dtSkills(V.Local.sSelect(V.Local.iCnt)).SKILL_ID!FieldVal,V.Local.sExp)
+				F.Data.DataTable.Select("dtSetup",V.Local.sExp,V.Local.sSelect2)
+				F.Intrinsic.Control.If(V.Local.sSelect.IsNotNoReturn)
+					F.Intrinsic.String.Split(V.Local.sSelect2,"*!*",V.Local.sSelect2)
+					F.Intrinsic.Control.For(V.Local.iCnt2,0,V.Local.sSelect2.UBound,1)
+						F.Data.DataTable.DeleteRow("dtSetup",V.Local.sSelect(V.Local.iCnt2))
+						'Save Changes
+						F.Data.DataTable.SaveToDB("dtSetup","con",V.Global.sTableName,V.Global.sID,4)
+						F.Data.DataTable.AcceptChanges("dtSetup")
+					F.Intrinsic.Control.Next(V.Local.iCnt2)
+				F.Intrinsic.Control.EndIf
+			F.Intrinsic.Control.Next(V.Local.iCnt)
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.CallSub(frmSkills_UnLoad)
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.cmdSelect_Click.End
+
+Program.Sub.SetContextMenusSkills.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+
+	Gui.frmSkills..ContextMenuCreate("ctxSkills")
+	Gui.frmSkills.GsGCSkills.ContextMenuAttach("ctxSkills")
+	Gui.frmSkills..ContextMenuAddItem("ctxSkills","SelectAll",0,"SelectAll")
+	Gui.frmSkills..ContextMenuAddItem("ctxSkills","DeselectAll",0,"Deselect All")
+	Gui.frmSkills..ContextMenuAddItem("ctxSkills","FlagAllCore",0,"Flag All Core")
+	Gui.frmSkills..ContextMenuAddItem("ctxSkills","UnflagAllCore",0,"Unflag All Core")
+	Gui.frmSkills..ContextMenuSetItemEventHandler("ctxSkills","SelectAll","MenuClickSkills")
+	Gui.frmSkills..ContextMenuSetItemEventHandler("ctxSkills","DeselectAll","MenuClickSkills")
+	Gui.frmSkills..ContextMenuSetItemEventHandler("ctxSkills","FlagAllCore","MenuClickSkills")
+	Gui.frmSkills..ContextMenuSetItemEventHandler("ctxSkills","UnflagAllCore","MenuClickSkills")
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.SetContextMenusSkills.End
+
+Program.Sub.MenuClickSkills.Start
+	F.Intrinsic.Control.Try
+	V.Local.sError.Declare
+	
+	V.Local.iID.Declare
+	V.Local.sExp.Declare
+	V.Local.iRow.Declare
+	
+	F.Intrinsic.Control.If(V.DataTable.dtSetup.Exists,=,False)
+		F.Intrinsic.Control.ExitSub
+	F.Intrinsic.Control.EndIf
+
+	F.Intrinsic.Control.SelectCase(V.Args.ItemName)
+		F.Intrinsic.Control.Case("SELECTALL")
+			F.Data.DataTable.SetValue("dtSkills",-1,"SEL",True)
+			
+		F.Intrinsic.Control.Case("DESELECTALL")
+			F.Data.DataTable.SetValue("dtSkills",-1,"SEL",False)
+			
+		F.Intrinsic.Control.Case("FLAGALLCORE")
+			F.Data.DataTable.SetValue("dtSkills",-1,"CORE",True)
+			
+		F.Intrinsic.Control.Case("UNFLAGALLCORE")
+			F.Data.DataTable.SetValue("dtSkills",-1,"CORE",False)
+			
+	F.Intrinsic.Control.EndSelect
+
+	F.Intrinsic.Control.Catch
+		F.Intrinsic.String.Build("Project: {0}{1}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}{1}{1}GAB Version: {5}",V.Ambient.ScriptPath,V.Ambient.Newline,V.Ambient.CurrentSubroutine,V.Ambient.ErrorNumber,V.Ambient.ErrorDescription,V.Ambient.GABVersion,V.Local.sError)
+		F.Intrinsic.UI.Msgbox(V.Local.sError)
+		F.Intrinsic.Control.End 
+	F.Intrinsic.Control.EndTry
+Program.Sub.MenuClickSkills.End
+
+Program.Sub.Comments.Start
+Program.Sub.Comments.End
